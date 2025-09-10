@@ -14,7 +14,6 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.junit.After
 import org.junit.Before
 import org.testcontainers.containers.PostgreSQLContainer
 

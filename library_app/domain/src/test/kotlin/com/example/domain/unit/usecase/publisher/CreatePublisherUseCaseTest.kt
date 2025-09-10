@@ -3,8 +3,8 @@ package com.example.domain.unit.usecase.publisher
 import com.example.domain.exception.ModelDuplicateException
 import com.example.domain.model.PublisherModel
 import com.example.domain.model.publisher.PublisherMother
-import com.example.domain.unit.repository.InMemoryPublisherRepository
 import com.example.domain.repository.PublisherRepository
+import com.example.domain.unit.repository.InMemoryPublisherRepository
 import com.example.domain.usecase.publisher.CreatePublisherUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify

@@ -62,11 +62,7 @@ fun Route.bbkRoutes() {
             get {
                 val code = call.getParam<String>("code", true) { it }!!
                 val bbk = readBbkByCodeUseCase(code)
-                if (bbk == null) {
-                    call.respond(HttpStatusCode.NotFound, "Bbk not found")
-                } else {
-                    call.respond(bbk)
-                }
+                call.respond(bbk)
             }
         }
 

@@ -1,6 +1,5 @@
 package com.example.data.integration
 
-import com.example.data.integration.BasePostgresIntegrationTest
 import com.example.data.local.entity.BbkEntity
 import com.example.data.local.repository.ApuRepositoryImpl
 import com.example.data.local.repository.BbkRepositoryImpl

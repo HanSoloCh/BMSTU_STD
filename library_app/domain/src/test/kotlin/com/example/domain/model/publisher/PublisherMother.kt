@@ -1,6 +1,5 @@
 package com.example.domain.model.publisher
 
-import com.example.domain.model.PublisherModel
 import java.util.UUID
 
 object PublisherMother {

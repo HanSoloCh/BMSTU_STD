@@ -13,9 +13,7 @@ import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.After
 import org.junit.Before
-import org.junit.FixMethodOrder
 import org.junit.Test
-import org.junit.runners.MethodSorters
 import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -30,7 +28,10 @@ class PublisherRepositoryImplClassicTest {
     @Before
     fun setup() {
         // In-memory база H2
-        db = Database.Companion.connect("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;", driver = "org.h2.Driver")
+        db = Database.Companion.connect(
+            "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;",
+            driver = "org.h2.Driver"
+        )
 
         transaction(db) {
             SchemaUtils.create(PublisherEntity)

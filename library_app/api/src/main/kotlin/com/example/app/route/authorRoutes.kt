@@ -62,11 +62,7 @@ fun Route.authorRoutes() {
             get {
                 val name = call.getParam<String>("name", true) { it }!!
                 val author = readAuthorByNameUseCase(name)
-                if (author == null) {
-                    call.respond(HttpStatusCode.NotFound, "Author not found")
-                } else {
-                    call.respond(author)
-                }
+                call.respond(author)
             }
         }
     }

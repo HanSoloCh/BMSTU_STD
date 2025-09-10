@@ -1,6 +1,5 @@
 package com.example.data.local.repository
 
-import com.example.data.local.entity.ApuEntity
 import com.example.data.local.entity.PublisherEntity
 import com.example.data.local.mapping.PublisherMapper
 import com.example.data.local.specification.PublisherSpecToExpressionMapper
