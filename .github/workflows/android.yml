@@ -3,7 +3,7 @@ name: Android CI
 on:
   push:
     branches:
-      - '**'   # запуск при пушах в любую ветку
+      - '**'
 
 jobs:
   build:
