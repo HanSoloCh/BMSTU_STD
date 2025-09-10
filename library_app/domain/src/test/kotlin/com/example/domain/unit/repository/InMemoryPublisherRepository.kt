@@ -1,6 +1,7 @@
-package com.example.domain.repository
+package com.example.domain.unit.repository
 
 import com.example.domain.model.PublisherModel
+import com.example.domain.repository.PublisherRepository
 import com.example.domain.specification.Specification
 import java.util.UUID
 

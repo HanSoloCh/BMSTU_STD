@@ -1,4 +1,4 @@
-package com.example.domain.usecase.apu
+package com.example.domain.unit.usecase.apu
 
 import com.example.domain.exception.ModelDuplicateException
 import com.example.domain.exception.ModelNotFoundException
@@ -6,6 +6,7 @@ import com.example.domain.model.ApuModel
 import com.example.domain.model.TestApu
 import com.example.domain.repository.ApuRepository
 import com.example.domain.repository.BbkRepository
+import com.example.domain.usecase.apu.CreateApuUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

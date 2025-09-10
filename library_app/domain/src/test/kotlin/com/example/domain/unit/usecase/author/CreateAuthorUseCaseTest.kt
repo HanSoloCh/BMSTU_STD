@@ -1,9 +1,10 @@
-package com.example.domain.usecase.author
+package com.example.domain.unit.usecase.author
 
 import com.example.domain.exception.ModelDuplicateException
 import com.example.domain.model.AuthorModel
 import com.example.domain.model.TestAuthor
 import com.example.domain.repository.AuthorRepository
+import com.example.domain.usecase.author.CreateAuthorUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

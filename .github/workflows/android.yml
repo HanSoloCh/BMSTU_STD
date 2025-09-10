@@ -29,6 +29,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Run tests
+      - name: Unit Tests
         run: cd library_app && ./gradlew test
+
+      - name: Integration Tests
+  	run: ./gradlew integrationTest
+
 

@@ -1,8 +1,9 @@
-package com.example.domain.usecase.publisher
+package com.example.domain.unit.usecase.publisher
 
 import com.example.domain.exception.ModelNotFoundException
 import com.example.domain.model.publisher.PublisherMother
 import com.example.domain.repository.PublisherRepository
+import com.example.domain.usecase.publisher.UpdatePublisherUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

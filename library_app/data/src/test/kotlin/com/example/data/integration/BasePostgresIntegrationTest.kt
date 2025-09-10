@@ -15,6 +15,7 @@ import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.After
+import org.junit.Before
 import org.testcontainers.containers.PostgreSQLContainer
 
 abstract class BasePostgresIntegrationTest {
@@ -53,7 +54,7 @@ abstract class BasePostgresIntegrationTest {
     }
 
     // Чистим БД после каждого теста
-    @After
+    @Before
     fun tearDownDatabase() {
         transaction(db) {
             ReservationEntity.deleteAll()

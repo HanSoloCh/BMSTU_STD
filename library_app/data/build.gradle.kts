@@ -1,6 +1,38 @@
 plugins {
     kotlin("jvm")
     alias(libs.plugins.allure)
+    idea
+}
+
+sourceSets {
+    create("integrationTest") {
+        kotlin.srcDir("src/integrationTest/kotlin")
+    }
+}
+
+idea {
+    module {
+        sourceSets.named("integrationTest") {
+            testSources.from(this.kotlin.srcDirs)
+        }
+    }
+}
+
+configurations.named("integrationTestImplementation") {
+    extendsFrom(configurations["testImplementation"])
+}
+configurations.named("integrationTestRuntimeOnly") {
+    extendsFrom(configurations["testRuntimeOnly"])
+}
+
+tasks.register<Test>("integrationTest") {
+    description = "Runs integration tests."
+    group = "verification"
+
+    testClassesDirs = sourceSets["integrationTest"].output.classesDirs
+    classpath = sourceSets["integrationTest"].runtimeClasspath
+
+    shouldRunAfter(tasks.named("test"))
 }
 
 dependencies {
@@ -29,4 +61,5 @@ dependencies {
     testImplementation(libs.postgresql)
     testImplementation(libs.testcontainers)
     testImplementation(libs.testcontainers.postgresql)
+    testImplementation(project(":data"))
 }

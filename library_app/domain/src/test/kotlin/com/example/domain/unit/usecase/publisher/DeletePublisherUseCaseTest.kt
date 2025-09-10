@@ -1,7 +1,8 @@
-package com.example.domain.usecase.publisher
+package com.example.domain.unit.usecase.publisher
 
 import com.example.domain.model.publisher.PublisherMother
 import com.example.domain.repository.PublisherRepository
+import com.example.domain.usecase.publisher.DeletePublisherUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -35,7 +36,7 @@ class DeletePublisherUseCaseTest {
         // Act
         deleteUseCase(testPublisher.id)
 
-        // Assert (важно: метод вызван, исключений нет)
+        // Assert
         coVerify { publisherRepository.deleteById(testPublisher.id) }
     }
 }
