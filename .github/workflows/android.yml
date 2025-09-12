@@ -34,5 +34,7 @@ jobs:
 
       - name: Integration Tests
         run: cd library_app && ./gradlew integrationTest
-
+        
+      - name: e2e Tests
+        run: cd library_app && ./gradlew e2eTest
 

@@ -13,7 +13,7 @@ object PublisherMapper {
         return PublisherModel(
             id = row[PublisherEntity.id].value,
             name = row[PublisherEntity.name],
-            description = row[PublisherEntity.name],
+            description = row[PublisherEntity.description],
             email = row[PublisherEntity.email],
             phoneNumber = row[PublisherEntity.phoneNumber]
         )

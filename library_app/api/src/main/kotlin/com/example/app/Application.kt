@@ -1,6 +1,10 @@
 package com.example.app
 
 import com.example.app.di.appModule
+import com.example.app.plugin.configureLog
+import com.example.app.plugin.configureSecurity
+import com.example.app.plugin.configureSerialization
+import com.example.app.plugin.configureStatusPages
 import com.example.app.route.apuRoutes
 import com.example.app.route.authRoutes
 import com.example.app.route.authorRoutes
@@ -26,6 +30,11 @@ fun main(args: Array<String>) = EngineMain.main(args)
 
 
 fun Application.module() {
+    configureLog()
+    configureSerialization()
+    configureSecurity()
+    configureStatusPages()
+
     install(CORS) {
         anyHost()
         allowHeader(HttpHeaders.ContentType)
@@ -36,7 +45,7 @@ fun Application.module() {
     }
     install(Koin) {
         slf4jLogger()
-        modules(appModule)
+        modules(appModule(environment.config))
     }
     routing {
         apuRoutes()
@@ -52,4 +61,3 @@ fun Application.module() {
         authRoutes()
     }
 }
-

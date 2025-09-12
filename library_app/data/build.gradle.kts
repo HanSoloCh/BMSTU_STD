@@ -53,13 +53,12 @@ dependencies {
 
     // Тестирование
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.mockk)
     testImplementation(kotlin("test"))
     testImplementation(libs.h2)
 
     // Тестовые контейнеры
-    testImplementation(libs.postgresql)
-    testImplementation(libs.testcontainers)
-    testImplementation(libs.testcontainers.postgresql)
-    testImplementation(project(":data"))
+    "integrationTestImplementation"(libs.postgresql)
+    "integrationTestImplementation"(libs.testcontainers)
+    "integrationTestImplementation"(libs.testcontainers.postgresql)
+    "integrationTestImplementation"(project(":data"))
 }

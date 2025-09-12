@@ -72,19 +72,18 @@ import com.example.domain.usecase.user.DeleteUserUseCase
 import com.example.domain.usecase.user.ReadUserByIdUseCase
 import com.example.domain.usecase.user.ReadUserByPhoneUseCase
 import com.example.domain.usecase.user.UpdateUserUseCase
-import com.typesafe.config.ConfigFactory
+import io.ktor.server.config.ApplicationConfig
 import org.koin.dsl.module
 import javax.sql.DataSource
 
-val appModule = module {
+fun appModule(config: ApplicationConfig) = module {
     single {
-        val config = ConfigFactory.load()
         DatabaseBuilder.DatabaseConfig(
-            url = config.getString("db.url"),
-            driver = config.getString("db.driver"),
-            username = config.getString("db.username"),
-            password = config.getString("db.password"),
-            maximumPoolSize = config.getInt("db.maxPoolSize")
+            url = config.property("ktor.database.url").getString(),
+            driver = config.property("ktor.database.driver").getString(),
+            username = config.property("ktor.database.user").getString(),
+            password = config.property("ktor.database.password").getString(),
+            maximumPoolSize = config.property("ktor.database.maxPoolSize").getString().toInt()
         )
     }
     single<DataSource> { DatabaseBuilder.createDataSource(get()) }

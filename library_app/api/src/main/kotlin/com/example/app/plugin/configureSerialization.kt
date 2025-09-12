@@ -21,6 +21,8 @@ fun Application.configureSerialization() {
                 contextual(LocalDate::class, LocalDateSerializer)
                 contextual(Instant::class, InstantSerializer)
             }
+            ignoreUnknownKeys = true
+            encodeDefaults = true
         })
     }
 }
