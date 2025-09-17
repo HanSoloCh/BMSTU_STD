@@ -1,60 +1,67 @@
 package com.example.data.integration
 
-import com.example.data.local.entity.ApuEntity
-import com.example.data.local.entity.AuthorEntity
-import com.example.data.local.entity.BbkEntity
-import com.example.data.local.entity.BookAuthorCrossRef
-import com.example.data.local.entity.BookEntity
-import com.example.data.local.entity.IssuanceEntity
-import com.example.data.local.entity.PublisherEntity
-import com.example.data.local.entity.ReservationEntity
-import com.example.data.local.entity.UserEntity
-import com.example.data.local.entity.UserFavoriteCrossRef
+import com.example.data.local.entity.*
+import com.typesafe.config.ConfigFactory
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.junit.Before
+import org.junit.After
 import org.testcontainers.containers.PostgreSQLContainer
 
 abstract class BasePostgresIntegrationTest {
+
     companion object {
-        val container = PostgreSQLContainer<Nothing>("postgres:16").apply {
-            withDatabaseName("testdb")
-            withUsername("testuser")
-            withPassword("testpass")
-            start()
+        private val config = ConfigFactory.load("application-test.conf")
+        private val mode = config.getString("test.database.mode")
+
+        private val container: PostgreSQLContainer<*> by lazy {
+            PostgreSQLContainer("postgres:16").apply {
+                withDatabaseName("testdb")
+                withUsername("testuser")
+                withPassword("testpass")
+                start()
+            }
+        }
+
+        val db: Database by lazy {
+            when (mode) {
+                "external" -> Database.connect(
+                    url = config.getString("test.database.url"),
+                    driver = "org.postgresql.Driver",
+                    user = config.getString("test.database.user"),
+                    password = config.getString("test.database.password")
+                )
+                "container" -> Database.connect(
+                    url = container.jdbcUrl,
+                    driver = container.driverClassName,
+                    user = container.username,
+                    password = container.password
+                )
+                else -> error("Unknown db mode: $mode")
+            }
+        }
+
+        init {
+            transaction(db) {
+                SchemaUtils.createMissingTablesAndColumns(
+                    ApuEntity,
+                    AuthorEntity,
+                    BbkEntity,
+                    BookAuthorCrossRef,
+                    BookEntity,
+                    IssuanceEntity,
+                    PublisherEntity,
+                    ReservationEntity,
+                    UserEntity,
+                    UserFavoriteCrossRef
+                )
+            }
         }
     }
 
-    protected var db = Database.Companion.connect(
-        url = container.jdbcUrl,
-        driver = "org.postgresql.Driver",
-        user = container.username,
-        password = container.password
-    )
-
-    // Создаем БД
-    init {
-        transaction(db) {
-            SchemaUtils.createMissingTablesAndColumns(
-                ApuEntity,
-                AuthorEntity,
-                BbkEntity,
-                BookAuthorCrossRef,
-                BookEntity,
-                IssuanceEntity,
-                PublisherEntity,
-                ReservationEntity,
-                UserEntity,
-                UserFavoriteCrossRef
-            )
-        }
-    }
-
-    // Чистим БД после каждого теста
-    @Before
-    fun tearDownDatabase() {
+    @After
+    fun afterTest() {
         transaction(db) {
             ReservationEntity.deleteAll()
             IssuanceEntity.deleteAll()

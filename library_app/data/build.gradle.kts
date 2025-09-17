@@ -59,5 +59,6 @@ dependencies {
     "integrationTestImplementation"(libs.postgresql)
     "integrationTestImplementation"(libs.testcontainers)
     "integrationTestImplementation"(libs.testcontainers.postgresql)
+    "integrationTestImplementation"(libs.config)
     "integrationTestImplementation"(project(":data"))
 }

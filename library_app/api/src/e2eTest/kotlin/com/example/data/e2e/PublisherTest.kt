@@ -4,6 +4,7 @@ import com.example.app.module
 import com.example.app.serializer.InstantSerializer
 import com.example.app.serializer.LocalDateSerializer
 import com.example.app.serializer.UUIDSerializer
+import com.example.data.integration.BaseE2ETest
 import com.example.domain.model.PublisherModel
 import com.typesafe.config.ConfigFactory
 import io.ktor.client.HttpClient
@@ -43,18 +44,6 @@ class PublisherE2ETest : BaseE2ETest() {
         ignoreUnknownKeys = true
     }
 
-    private fun testConfig() = HoconApplicationConfig(
-        ConfigFactory.parseMap(
-            mapOf(
-                "ktor.database.driver" to "org.postgresql.Driver",
-                "ktor.database.url" to container.jdbcUrl,
-                "ktor.database.user" to container.username,
-                "ktor.database.password" to container.password,
-                "ktor.database.maxPoolSize" to "5"
-            )
-        )
-    )
-
     private fun ApplicationTestBuilder.testClient(): HttpClient =
         createClient {
             install(ContentNegotiation) { json(testJson) }
@@ -62,7 +51,7 @@ class PublisherE2ETest : BaseE2ETest() {
 
     @Test
     fun `create publisher`() = testApplication {
-        environment { config = testConfig() }
+        environment { config = testConfig }
         application { module() }
 
         val client = testClient()
@@ -78,7 +67,7 @@ class PublisherE2ETest : BaseE2ETest() {
 
     @Test
     fun `read publisher by id`() = testApplication {
-        environment { config = testConfig() }
+        environment { config = testConfig }
         application { module() }
 
         val client = testClient()
@@ -98,7 +87,7 @@ class PublisherE2ETest : BaseE2ETest() {
 
     @Test
     fun `update publisher`() = testApplication {
-        environment { config = testConfig() }
+        environment { config = testConfig }
         application { module() }
 
         val client = testClient()
@@ -123,8 +112,8 @@ class PublisherE2ETest : BaseE2ETest() {
 
     @Test
     fun `delete publisher`() = testApplication {
-        environment { config = testConfig() }
-        application { module() } // <-- добавил
+        environment { config = testConfig }
+        application { module() }
 
         val client = testClient()
         val publisher = PublisherModel(UUID.randomUUID(), "Manning")
