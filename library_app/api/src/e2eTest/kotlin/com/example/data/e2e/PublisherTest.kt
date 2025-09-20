@@ -4,9 +4,7 @@ import com.example.app.module
 import com.example.app.serializer.InstantSerializer
 import com.example.app.serializer.LocalDateSerializer
 import com.example.app.serializer.UUIDSerializer
-import com.example.data.integration.BaseE2ETest
 import com.example.domain.model.PublisherModel
-import com.typesafe.config.ConfigFactory
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.delete
@@ -19,7 +17,6 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
-import io.ktor.server.config.HoconApplicationConfig
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
 import kotlinx.serialization.json.Json
@@ -29,7 +26,6 @@ import java.time.Instant
 import java.time.LocalDate
 import java.util.UUID
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 
 class PublisherE2ETest : BaseE2ETest() {
@@ -50,82 +46,44 @@ class PublisherE2ETest : BaseE2ETest() {
         }
 
     @Test
-    fun `create publisher`() = testApplication {
+    fun `publisher full e2e flow`() = testApplication {
         environment { config = testConfig }
         application { module() }
 
         val client = testClient()
+
+        // 1. CREATE
         val publisher = PublisherModel(UUID.randomUUID(), "O’Reilly")
-
-        val response = client.post("/publisher") {
+        val createResponse = client.post("/publisher") {
             contentType(ContentType.Application.Json)
             setBody(testJson.encodeToString(PublisherModel.serializer(), publisher))
         }
+        assertEquals(HttpStatusCode.Created, createResponse.status)
 
-        assertEquals(HttpStatusCode.Created, response.status)
-    }
+        // 2. READ
+        val readResponse = client.get("/publisher/${publisher.id}")
+        assertEquals(HttpStatusCode.OK, readResponse.status)
+        val created = testJson.decodeFromString(PublisherModel.serializer(), readResponse.bodyAsText())
+        assertEquals(publisher, created)
 
-    @Test
-    fun `read publisher by id`() = testApplication {
-        environment { config = testConfig }
-        application { module() }
-
-        val client = testClient()
-        val publisher = PublisherModel(UUID.randomUUID(), "Packt")
-
-        client.post("/publisher") {
-            contentType(ContentType.Application.Json)
-            setBody(testJson.encodeToString(PublisherModel.serializer(), publisher))
-        }
-
-        val response = client.get("/publisher/${publisher.id}")
-        assertEquals(HttpStatusCode.OK, response.status)
-
-        val result = testJson.decodeFromString(PublisherModel.serializer(), response.bodyAsText())
-        assertEquals(publisher, result)
-    }
-
-    @Test
-    fun `update publisher`() = testApplication {
-        environment { config = testConfig }
-        application { module() }
-
-        val client = testClient()
-        val publisher = PublisherModel(UUID.randomUUID(), "O’Reilly")
-
-        client.post("/publisher") {
-            contentType(ContentType.Application.Json)
-            setBody(testJson.encodeToString(PublisherModel.serializer(), publisher))
-        }
-
+        // 3. UPDATE
         val updated = publisher.copy(name = "O’Reilly Media")
-        val response = client.put("/publisher") {
+        val updateResponse = client.put("/publisher") {
             contentType(ContentType.Application.Json)
             setBody(testJson.encodeToString(PublisherModel.serializer(), updated))
         }
+        assertEquals(HttpStatusCode.NoContent, updateResponse.status)
 
-        assertEquals(HttpStatusCode.NoContent, response.status)
+        val afterUpdate = client.get("/publisher/${publisher.id}")
+        assertEquals(HttpStatusCode.OK, afterUpdate.status)
+        val updatedResult = testJson.decodeFromString(PublisherModel.serializer(), afterUpdate.bodyAsText())
+        assertEquals("O’Reilly Media", updatedResult.name)
 
-        val check = client.get("/publisher/${publisher.id}")
-        assertTrue(check.bodyAsText().contains("O’Reilly Media"))
-    }
-
-    @Test
-    fun `delete publisher`() = testApplication {
-        environment { config = testConfig }
-        application { module() }
-
-        val client = testClient()
-        val publisher = PublisherModel(UUID.randomUUID(), "Manning")
-
-        client.post("/publisher") {
-            contentType(ContentType.Application.Json)
-            setBody(testJson.encodeToString(PublisherModel.serializer(), publisher))
-        }
-
+        // 4. DELETE
         val deleteResponse = client.delete("/publisher/${publisher.id}")
         assertEquals(HttpStatusCode.NoContent, deleteResponse.status)
 
+        // 5. READ after delete
         val afterDelete = client.get("/publisher/${publisher.id}")
         assertEquals(HttpStatusCode.NotFound, afterDelete.status)
     }

@@ -27,12 +27,11 @@ configurations.named("integrationTestRuntimeOnly") {
 tasks.register<Test>("integrationTest") {
     description = "Runs integration tests."
     group = "verification"
-
     testClassesDirs = sourceSets["integrationTest"].output.classesDirs
     classpath = sourceSets["integrationTest"].runtimeClasspath
-
-    shouldRunAfter(tasks.named("test"))
+    useJUnitPlatform()
 }
+
 
 dependencies {
     implementation(project(":domain"))
@@ -54,6 +53,9 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(kotlin("test"))
     testImplementation(libs.h2)
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+
 
     // Тестовые контейнеры
     "integrationTestImplementation"(libs.postgresql)

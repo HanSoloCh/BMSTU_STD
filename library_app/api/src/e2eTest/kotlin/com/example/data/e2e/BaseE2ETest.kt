@@ -1,4 +1,4 @@
-package com.example.data.integration
+package com.example.data.e2e
 
 import com.example.data.local.entity.*
 import com.typesafe.config.ConfigFactory
