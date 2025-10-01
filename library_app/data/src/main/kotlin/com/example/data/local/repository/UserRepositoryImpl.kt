@@ -55,12 +55,18 @@ class UserRepositoryImpl(
         query(spec).isNotEmpty()
     }
 
-    override suspend fun query(spec: Specification<UserModel>): List<UserModel> =
+    override suspend fun query(
+        spec: Specification<UserModel>,
+        page: Int,
+        pageSize: Int
+    ): List<UserModel> =
         withContext(Dispatchers.IO) {
             val expression = UserSpecToExpressionMapper.map(spec)
+            val offset: Long = (page * pageSize).toLong()
 
             transaction(db) {
-                UserEntity.selectAll().where { expression }.map { UserMapper.toDomain(it) }
+                UserEntity.selectAll().where { expression }.limit(pageSize, offset)
+                    .map { UserMapper.toDomain(it) }
             }
 
         }

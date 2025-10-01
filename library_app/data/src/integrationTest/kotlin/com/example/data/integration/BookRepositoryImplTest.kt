@@ -1,12 +1,17 @@
 package com.example.data.integration
 
-import com.example.data.local.entity.*
+import com.example.data.local.entity.AuthorEntity
+import com.example.data.local.entity.BbkEntity
+import com.example.data.local.entity.PublisherEntity
 import com.example.data.local.repository.BookRepositoryImpl
 import com.example.domain.model.BookModel
 import kotlinx.coroutines.test.runTest
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

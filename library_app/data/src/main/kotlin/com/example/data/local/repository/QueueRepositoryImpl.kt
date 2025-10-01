@@ -58,12 +58,16 @@ class QueueRepositoryImpl(
     }
 
 
-    override suspend fun query(spec: Specification<QueueModel>): List<QueueModel> =
+    override suspend fun query(
+        spec: Specification<QueueModel>,
+        page: Int,
+        pageSize: Int
+    ): List<QueueModel> =
         withContext(Dispatchers.IO) {
             val expression = QueueSpecToExpressionMapper.map(spec)
-
+            val offset: Long = (page * pageSize).toLong()
             transaction(db) {
-                QueueEntity.selectAll().where { expression }
+                QueueEntity.selectAll().where { expression }.limit(pageSize, offset)
                     .map { QueueMapper.toDomain(it) }
             }
         }

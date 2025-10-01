@@ -8,5 +8,5 @@ interface UserFavoriteRepository {
 
     suspend fun delete(userId: UUID, bookId: UUID): Int
 
-    suspend fun readByUserId(userId: UUID): List<BookModel>
+    suspend fun readByUserId(userId: UUID, page: Int = 0, pageSize: Int = 20): List<BookModel>
 }

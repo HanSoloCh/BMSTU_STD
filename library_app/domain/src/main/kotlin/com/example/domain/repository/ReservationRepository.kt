@@ -13,5 +13,9 @@ interface ReservationRepository {
 
     suspend fun isContain(spec: Specification<ReservationModel>): Boolean
 
-    suspend fun query(spec: Specification<ReservationModel>): List<ReservationModel>
+    suspend fun query(
+        spec: Specification<ReservationModel>,
+        page: Int = 0,
+        pageSize: Int = 20
+    ): List<ReservationModel>
 }

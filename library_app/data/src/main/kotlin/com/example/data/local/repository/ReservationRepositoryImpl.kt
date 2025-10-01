@@ -25,7 +25,6 @@ class ReservationRepositoryImpl(
             ReservationEntity.insertAndGetId {
                 ReservationMapper.toInsertStatement(reservationModel, it)
             }.value
-//            TODO("Нужно убавлять число книг")
         }
     }
 
@@ -48,12 +47,16 @@ class ReservationRepositoryImpl(
             query(spec).isNotEmpty()
         }
 
-    override suspend fun query(spec: Specification<ReservationModel>): List<ReservationModel> =
+    override suspend fun query(
+        spec: Specification<ReservationModel>,
+        page: Int,
+        pageSize: Int
+    ): List<ReservationModel> =
         withContext(Dispatchers.IO) {
             val expression = ReservationSpecToExpressionMapper.map(spec)
-
+            val offset: Long = (page * pageSize).toLong()
             transaction(db) {
-                ReservationEntity.selectAll().where { expression }
+                ReservationEntity.selectAll().where { expression }.limit(pageSize, offset)
                     .map { ReservationMapper.toDomain(it) }
             }
         }

@@ -15,5 +15,9 @@ interface QueueRepository {
 
     suspend fun getQueuePosition(bookId: UUID, userId: UUID): Int?
 
-    suspend fun query(spec: Specification<QueueModel>): List<QueueModel>
+    suspend fun query(
+        spec: Specification<QueueModel>,
+        page: Int = 0,
+        pageSize: Int = 20
+    ): List<QueueModel>
 }

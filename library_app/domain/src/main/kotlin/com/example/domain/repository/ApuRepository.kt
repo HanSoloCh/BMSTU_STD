@@ -15,5 +15,9 @@ interface ApuRepository {
 
     suspend fun isContain(spec: Specification<ApuModel>): Boolean
 
-    suspend fun query(spec: Specification<ApuModel>): List<ApuModel>
+    suspend fun query(
+        spec: Specification<ApuModel>,
+        page: Int = 0,
+        pageSize: Int = 20
+    ): List<ApuModel>
 }

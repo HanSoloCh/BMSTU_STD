@@ -15,5 +15,9 @@ interface PublisherRepository {
 
     suspend fun isContain(spec: Specification<PublisherModel>): Boolean
 
-    suspend fun query(spec: Specification<PublisherModel>): List<PublisherModel>
+    suspend fun query(
+        spec: Specification<PublisherModel>,
+        page: Int = 0,
+        pageSize: Int = 20
+    ): List<PublisherModel>
 }

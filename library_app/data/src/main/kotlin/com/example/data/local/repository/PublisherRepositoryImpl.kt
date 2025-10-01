@@ -57,12 +57,16 @@ class PublisherRepositoryImpl(
             query(spec).isNotEmpty()
         }
 
-    override suspend fun query(spec: Specification<PublisherModel>): List<PublisherModel> =
+    override suspend fun query(
+        spec: Specification<PublisherModel>,
+        page: Int,
+        pageSize: Int
+    ): List<PublisherModel> =
         withContext(Dispatchers.IO) {
             val expression = PublisherSpecToExpressionMapper.map(spec)
-
+            val offset: Long = (page * pageSize).toLong()
             transaction(db) {
-                PublisherEntity.selectAll().where { expression }
+                PublisherEntity.selectAll().where { expression }.limit(pageSize, offset)
                     .map { PublisherMapper.toDomain(it) }
             }
         }

@@ -27,8 +27,12 @@ class InMemoryPublisherRepository : PublisherRepository {
         return storage[id]
     }
 
-    override suspend fun query(spec: Specification<PublisherModel>): List<PublisherModel> {
-        return storage.values.filter { spec.specified(it) }
+    override suspend fun query(
+        spec: Specification<PublisherModel>,
+        page: Int,
+        pageSize: Int
+    ): List<PublisherModel> {
+        return storage.values.filter { spec.specified(it) }.subList(page * pageSize, (page + 1) * pageSize)
     }
 
     override suspend fun update(model: PublisherModel): Int {

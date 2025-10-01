@@ -9,6 +9,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
+import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
@@ -63,12 +64,13 @@ class PublisherE2ETest : BaseE2ETest() {
         // 2. READ
         val readResponse = client.get("/publisher/${publisher.id}")
         assertEquals(HttpStatusCode.OK, readResponse.status)
-        val created = testJson.decodeFromString(PublisherModel.serializer(), readResponse.bodyAsText())
+        val created =
+            testJson.decodeFromString(PublisherModel.serializer(), readResponse.bodyAsText())
         assertEquals(publisher, created)
 
         // 3. UPDATE
         val updated = publisher.copy(name = "O’Reilly Media")
-        val updateResponse = client.put("/publisher") {
+        val updateResponse = client.patch("/publisher") {
             contentType(ContentType.Application.Json)
             setBody(testJson.encodeToString(PublisherModel.serializer(), updated))
         }
@@ -76,7 +78,8 @@ class PublisherE2ETest : BaseE2ETest() {
 
         val afterUpdate = client.get("/publisher/${publisher.id}")
         assertEquals(HttpStatusCode.OK, afterUpdate.status)
-        val updatedResult = testJson.decodeFromString(PublisherModel.serializer(), afterUpdate.bodyAsText())
+        val updatedResult =
+            testJson.decodeFromString(PublisherModel.serializer(), afterUpdate.bodyAsText())
         assertEquals("O’Reilly Media", updatedResult.name)
 
         // 4. DELETE

@@ -38,12 +38,15 @@ class UserFavoriteRepositoryImpl(
         }
     }
 
-    override suspend fun readByUserId(userId: UUID): List<BookModel> = withContext(Dispatchers.IO) {
-        transaction(db) {
-            (BookEntity innerJoin UserFavoriteCrossRef)
-                .select(BookEntity.columns)
-                .where { UserFavoriteCrossRef.userId eq userId }
-                .map { BookMapper.toDomain(it) }
+    override suspend fun readByUserId(userId: UUID, page: Int, pageSize: Int): List<BookModel> =
+        withContext(Dispatchers.IO) {
+            val offset: Long = (page * pageSize).toLong()
+            transaction(db) {
+                (BookEntity innerJoin UserFavoriteCrossRef)
+                    .select(BookEntity.columns)
+                    .where { UserFavoriteCrossRef.userId eq userId }
+                    .limit(pageSize, offset)
+                    .map { BookMapper.toDomain(it) }
+            }
         }
-    }
 }

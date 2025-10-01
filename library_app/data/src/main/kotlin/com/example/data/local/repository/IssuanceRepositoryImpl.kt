@@ -25,7 +25,6 @@ class IssuanceRepositoryImpl(
             IssuanceEntity.insertAndGetId {
                 IssuanceMapper.toInsertStatement(issuanceModel, it)
             }.value
-//            TODO("Сделать вызов функции по уменьшению общего числа книг")
         }
     }
 
@@ -48,12 +47,17 @@ class IssuanceRepositoryImpl(
             query(spec).isNotEmpty()
         }
 
-    override suspend fun query(spec: Specification<IssuanceModel>): List<IssuanceModel> =
+    override suspend fun query(
+        spec: Specification<IssuanceModel>,
+        page: Int,
+        pageSize: Int
+    ): List<IssuanceModel> =
         withContext(Dispatchers.IO) {
             val expression = IssuanceSpecToExpressionMapper.map(spec)
-
+            val offset: Long = (page * pageSize).toLong()
             transaction(db) {
-                IssuanceEntity.selectAll().where { expression }.map { IssuanceMapper.toDomain(it) }
+                IssuanceEntity.selectAll().where { expression }.limit(pageSize, offset)
+                    .map { IssuanceMapper.toDomain(it) }
             }
         }
 }

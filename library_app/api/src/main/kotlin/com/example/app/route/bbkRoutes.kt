@@ -14,8 +14,8 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
+import io.ktor.server.routing.patch
 import io.ktor.server.routing.post
-import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import org.koin.ktor.ext.inject
 import java.util.UUID
@@ -25,6 +25,7 @@ fun Route.bbkRoutes() {
     val createBbkUseCase by inject<CreateBbkUseCase>()
     val updateBbkUseCase by inject<UpdateBbkUseCase>()
     val deleteBbkUseCase by inject<DeleteBbkUseCase>()
+    val readBbkByCodeUseCase by inject<ReadBbkByCodeUseCase>()
 
     route("/bbk") {
         post {
@@ -33,10 +34,19 @@ fun Route.bbkRoutes() {
             call.respond(HttpStatusCode.Created, createdId)
         }
 
-        put {
+        patch {
             val bbk = call.receive<BbkModel>()
             updateBbkUseCase(bbk)
             call.respond(HttpStatusCode.NoContent)
+        }
+
+        get {
+            val q = call.request.queryParameters["q"] ?: ""
+            val page = call.request.queryParameters["page"]?.toIntOrNull() ?: 0
+            val size = call.request.queryParameters["size"]?.toIntOrNull() ?: 20
+
+            val result = readBbkByCodeUseCase(q, page, size)
+            call.respond(result)
         }
 
         route("/{id}") {
@@ -58,11 +68,14 @@ fun Route.bbkRoutes() {
         }
 
         route("/by-code") {
-            val readBbkByCodeUseCase: ReadBbkByCodeUseCase by inject()
             get {
                 val code = call.getParam<String>("code", true) { it }!!
                 val bbk = readBbkByCodeUseCase(code)
-                call.respond(bbk)
+                if (bbk == null) {
+                    call.respond(HttpStatusCode.NotFound, "Bbk not found")
+                } else {
+                    call.respond(bbk)
+                }
             }
         }
 

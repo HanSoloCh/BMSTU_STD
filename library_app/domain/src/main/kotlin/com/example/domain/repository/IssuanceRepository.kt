@@ -13,5 +13,9 @@ interface IssuanceRepository {
 
     suspend fun isContain(spec: Specification<IssuanceModel>): Boolean
 
-    suspend fun query(spec: Specification<IssuanceModel>): List<IssuanceModel>
+    suspend fun query(
+        spec: Specification<IssuanceModel>,
+        page: Int = 0,
+        pageSize: Int = 20
+    ): List<IssuanceModel>
 }

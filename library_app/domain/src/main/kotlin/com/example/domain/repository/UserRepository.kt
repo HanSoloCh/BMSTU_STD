@@ -15,7 +15,11 @@ interface UserRepository {
 
     suspend fun isContain(spec: Specification<UserModel>): Boolean
 
-    suspend fun query(spec: Specification<UserModel>): List<UserModel>
+    suspend fun query(
+        spec: Specification<UserModel>,
+        page: Int = 0,
+        pageSize: Int = 20
+    ): List<UserModel>
 
     suspend fun login(phone: String, password: String): UserModel?
 }

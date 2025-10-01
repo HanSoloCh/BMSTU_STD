@@ -1,18 +1,25 @@
 package com.example.data.integration
 
-import com.example.data.local.entity.*
-import com.example.data.local.repository.BookRepositoryImpl
-import com.example.domain.model.BookModel
+import com.example.data.local.entity.ApuEntity
+import com.example.data.local.entity.AuthorEntity
+import com.example.data.local.entity.BbkEntity
+import com.example.data.local.entity.BookAuthorCrossRef
+import com.example.data.local.entity.BookEntity
+import com.example.data.local.entity.IssuanceEntity
+import com.example.data.local.entity.PublisherEntity
+import com.example.data.local.entity.ReservationEntity
+import com.example.data.local.entity.UserEntity
+import com.example.data.local.entity.UserFavoriteCrossRef
 import com.typesafe.config.ConfigFactory
-import kotlinx.coroutines.test.runTest
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.deleteAll
-import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.TestInstance
 import org.testcontainers.containers.PostgreSQLContainer
-import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class BasePostgresIntegrationTest {
@@ -43,6 +50,7 @@ abstract class BasePostgresIntegrationTest {
                     password = container.password
                 )
             }
+
             "external" -> {
                 Database.connect(
                     url = config.getString("test.database.url"),
@@ -51,6 +59,7 @@ abstract class BasePostgresIntegrationTest {
                     password = config.getString("test.database.password")
                 )
             }
+
             else -> error("Unknown db mode: $mode")
         }
 

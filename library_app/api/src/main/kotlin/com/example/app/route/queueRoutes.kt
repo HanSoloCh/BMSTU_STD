@@ -15,8 +15,8 @@ import io.ktor.server.response.respondText
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
+import io.ktor.server.routing.patch
 import io.ktor.server.routing.post
-import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import org.koin.ktor.ext.inject
 import java.util.UUID
@@ -35,7 +35,7 @@ fun Route.queueRoutes() {
             call.respond(HttpStatusCode.Created, createdId)
         }
 
-        put {
+        patch {
             val queue = call.receive<QueueModel>()
             updateQueueUseCase(queue)
             call.respond(HttpStatusCode.NoContent)
@@ -45,7 +45,10 @@ fun Route.queueRoutes() {
             val bookId = call.getParam<UUID>("bookId") { UUID.fromString(it) }
             val userId = call.getParam<UUID>("userId") { UUID.fromString(it) }
 
-            val result = readQueueUseCase(bookId, userId)
+            val page = call.request.queryParameters["page"]?.toIntOrNull() ?: 0
+            val size = call.request.queryParameters["size"]?.toIntOrNull() ?: 20
+
+            val result = readQueueUseCase(bookId, userId, page, size)
             call.respond(HttpStatusCode.OK, result)
         }
 

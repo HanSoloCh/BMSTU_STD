@@ -15,5 +15,9 @@ interface BbkRepository {
 
     suspend fun isContain(spec: Specification<BbkModel>): Boolean
 
-    suspend fun query(spec: Specification<BbkModel>): List<BbkModel>
+    suspend fun query(
+        spec: Specification<BbkModel>,
+        page: Int = 0,
+        pageSize: Int = 20
+    ): List<BbkModel>
 }

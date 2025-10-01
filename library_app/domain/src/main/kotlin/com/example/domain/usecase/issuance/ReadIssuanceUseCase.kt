@@ -11,7 +11,12 @@ import java.util.UUID
 class ReadIssuanceUseCase(
     private val issuanceRepository: IssuanceRepository
 ) {
-    suspend operator fun invoke(bookId: UUID?, userId: UUID?): List<IssuanceModel> {
+    suspend operator fun invoke(
+        bookId: UUID?,
+        userId: UUID?,
+        page: Int = 0,
+        pageSize: Int = 20
+    ): List<IssuanceModel> {
         if (bookId != null && userId != null)
             return issuanceRepository.query(
                 AndSpecification(
@@ -19,14 +24,17 @@ class ReadIssuanceUseCase(
                         IssuanceBookIdSpecification(bookId),
                         IssuanceUserIdSpecification(userId)
                     )
-                )
+                ),
+                page,
+                pageSize
             )
         else if (bookId != null)
             return issuanceRepository.query(
                 IssuanceBookIdSpecification(bookId),
+                page, pageSize
             )
         else if (userId != null)
-            return issuanceRepository.query(IssuanceUserIdSpecification(userId))
+            return issuanceRepository.query(IssuanceUserIdSpecification(userId), page, pageSize)
         else
             throw InvalidValueException("bookId, userId", "null, null")
     }

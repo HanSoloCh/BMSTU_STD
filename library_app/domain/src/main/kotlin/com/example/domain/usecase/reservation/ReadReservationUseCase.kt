@@ -11,7 +11,12 @@ import java.util.UUID
 class ReadReservationUseCase(
     private val reservationRepository: ReservationRepository
 ) {
-    suspend operator fun invoke(bookId: UUID?, userId: UUID?): List<ReservationModel> {
+    suspend operator fun invoke(
+        bookId: UUID?,
+        userId: UUID?,
+        page: Int = 0,
+        pageSize: Int = 20
+    ): List<ReservationModel> {
         if (bookId != null && userId != null)
             return reservationRepository.query(
                 AndSpecification(
@@ -19,14 +24,22 @@ class ReadReservationUseCase(
                         ReservationBookIdSpecification(bookId),
                         ReservationUserIdSpecification(userId)
                     )
-                )
+                ),
+                page,
+                pageSize
             )
         else if (bookId != null)
             return reservationRepository.query(
                 ReservationBookIdSpecification(bookId),
+                page,
+                pageSize
             )
         else if (userId != null)
-            return reservationRepository.query(ReservationUserIdSpecification(userId))
+            return reservationRepository.query(
+                ReservationUserIdSpecification(userId),
+                page,
+                pageSize
+            )
         else
             throw InvalidValueException("bookId, userId", "null, null")
     }

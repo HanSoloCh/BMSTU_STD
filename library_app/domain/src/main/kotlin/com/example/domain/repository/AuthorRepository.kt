@@ -15,5 +15,9 @@ interface AuthorRepository {
 
     suspend fun isContain(spec: Specification<AuthorModel>): Boolean
 
-    suspend fun query(spec: Specification<AuthorModel>): List<AuthorModel>
+    suspend fun query(
+        spec: Specification<AuthorModel>,
+        page: Int = 0,
+        pageSize: Int = 20
+    ): List<AuthorModel>
 }

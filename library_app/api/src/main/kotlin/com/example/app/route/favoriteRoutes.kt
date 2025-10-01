@@ -48,7 +48,11 @@ fun Route.favoriteRoutes() {
     route("/user/{userId}/favorite") {
         get {
             val userId = call.getParam<UUID>("userId", true) { UUID.fromString(it) }!!
-            val result = readFavoriteByUserIdUseCase(userId)
+            val page = call.request.queryParameters["page"]?.toIntOrNull() ?: 0
+            val size = call.request.queryParameters["size"]?.toIntOrNull() ?: 20
+
+            val result = readFavoriteByUserIdUseCase(userId, page, size)
+
             call.respond(HttpStatusCode.OK, result)
         }
     }

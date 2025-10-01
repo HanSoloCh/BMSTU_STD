@@ -7,7 +7,11 @@ import com.example.domain.specification.author.AuthorNameSpecification
 class ReadAuthorByNameUseCase(
     private val authorRepository: AuthorRepository
 ) {
-    suspend operator fun invoke(authorName: String): List<AuthorModel> {
-        return authorRepository.query(AuthorNameSpecification(authorName))
+    suspend operator fun invoke(
+        authorName: String,
+        page: Int = 0,
+        pageSize: Int = 20
+    ): List<AuthorModel> {
+        return authorRepository.query(AuthorNameSpecification(authorName), page, pageSize)
     }
 }

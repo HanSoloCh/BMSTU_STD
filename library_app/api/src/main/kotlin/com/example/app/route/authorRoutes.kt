@@ -14,8 +14,8 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
+import io.ktor.server.routing.patch
 import io.ktor.server.routing.post
-import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import org.koin.ktor.ext.inject
 import java.util.UUID
@@ -25,6 +25,7 @@ fun Route.authorRoutes() {
     val createAuthorUseCase: CreateAuthorUseCase by inject()
     val updateAuthorUseCase: UpdateAuthorUseCase by inject()
     val deleteAuthorUseCase: DeleteAuthorUseCase by inject()
+    val readAuthorByNameUseCase: ReadAuthorByNameUseCase by inject()
 
     route("/author") {
         post {
@@ -33,10 +34,19 @@ fun Route.authorRoutes() {
             call.respond(HttpStatusCode.Created, createdId)
         }
 
-        put {
+        patch {
             val author = call.receive<AuthorModel>()
             updateAuthorUseCase(author)
             call.respond(HttpStatusCode.NoContent)
+        }
+
+        get {
+            val q = call.request.queryParameters["q"] ?: ""
+            val page = call.request.queryParameters["page"]?.toIntOrNull() ?: 0
+            val size = call.request.queryParameters["size"]?.toIntOrNull() ?: 20
+
+            val result = readAuthorByNameUseCase(q, page, size)
+            call.respond(result)
         }
 
         route("/{id}") {
@@ -54,15 +64,6 @@ fun Route.authorRoutes() {
                 val authorId = call.getParam<UUID>("id", true) { UUID.fromString(it) }!!
                 deleteAuthorUseCase(authorId)
                 call.respond(HttpStatusCode.NoContent)
-            }
-        }
-
-        route("/by-name") {
-            val readAuthorByNameUseCase: ReadAuthorByNameUseCase by inject()
-            get {
-                val name = call.getParam<String>("name", true) { it }!!
-                val author = readAuthorByNameUseCase(name)
-                call.respond(author)
             }
         }
     }

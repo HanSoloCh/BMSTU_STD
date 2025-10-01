@@ -54,11 +54,17 @@ class ApuRepositoryImpl(
         query(spec).isNotEmpty()
     }
 
-    override suspend fun query(spec: Specification<ApuModel>): List<ApuModel> =
+    override suspend fun query(
+        spec: Specification<ApuModel>,
+        page: Int,
+        pageSize: Int
+    ): List<ApuModel> =
         withContext(Dispatchers.IO) {
             val expression = ApuSpecToExpressionMapper.map(spec)
+            val offset: Long = (page * pageSize).toLong()
             transaction(db) {
-                ApuEntity.selectAll().where(expression).map { ApuMapper.toDomain(it) }
+                ApuEntity.selectAll().where(expression).limit(pageSize, offset)
+                    .map { ApuMapper.toDomain(it) }
             }
         }
 }

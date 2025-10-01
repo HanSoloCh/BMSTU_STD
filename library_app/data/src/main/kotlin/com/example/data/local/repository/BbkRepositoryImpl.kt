@@ -54,12 +54,17 @@ class BbkRepositoryImpl(
         query(spec).isNotEmpty()
     }
 
-    override suspend fun query(spec: Specification<BbkModel>): List<BbkModel> =
+    override suspend fun query(
+        spec: Specification<BbkModel>,
+        page: Int,
+        pageSize: Int
+    ): List<BbkModel> =
         withContext(Dispatchers.IO) {
             val expression = BbkSpecToExpressionMapper.map(spec)
-
+            val offset: Long = (page * pageSize).toLong()
             transaction(db) {
-                BbkEntity.selectAll().where { expression }.map { BbkMapper.toDomain(it) }
+                BbkEntity.selectAll().where { expression }.limit(pageSize, offset)
+                    .map { BbkMapper.toDomain(it) }
             }
         }
 }

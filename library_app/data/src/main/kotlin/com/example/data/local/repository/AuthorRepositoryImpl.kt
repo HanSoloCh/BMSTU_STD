@@ -55,12 +55,17 @@ class AuthorRepositoryImpl(
         query(spec).isNotEmpty()
     }
 
-    override suspend fun query(spec: Specification<AuthorModel>): List<AuthorModel> =
+    override suspend fun query(
+        spec: Specification<AuthorModel>,
+        page: Int,
+        pageSize: Int
+    ): List<AuthorModel> =
         withContext(Dispatchers.IO) {
             val expression = AuthorSpecToExpressionMapper.map(spec)
-
+            val offset: Long = (page * pageSize).toLong()
             transaction(db) {
-                AuthorEntity.selectAll().where { expression }.map { AuthorMapper.toDomain(it) }
+                AuthorEntity.selectAll().where { expression }.limit(pageSize, offset)
+                    .map { AuthorMapper.toDomain(it) }
             }
         }
 }

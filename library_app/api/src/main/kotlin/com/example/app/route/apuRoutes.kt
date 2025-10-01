@@ -14,8 +14,8 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
+import io.ktor.server.routing.patch
 import io.ktor.server.routing.post
-import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import org.koin.ktor.ext.inject
 import java.util.UUID
@@ -34,10 +34,19 @@ fun Route.apuRoutes() {
             call.respond(HttpStatusCode.Created, createdId)
         }
 
-        put {
+        patch {
             val apu = call.receive<ApuModel>()
             updateApuUseCase(apu)
             call.respond(HttpStatusCode.NoContent)
+        }
+
+        get {
+            val q = call.request.queryParameters["q"] ?: ""
+            val page = call.request.queryParameters["page"]?.toIntOrNull() ?: 0
+            val size = call.request.queryParameters["size"]?.toIntOrNull() ?: 20
+
+            val result = readApuByTermUseCase(q, page, size)
+            call.respond(result)
         }
 
         route("/{id}") {
@@ -55,14 +64,6 @@ fun Route.apuRoutes() {
                 val apuId = call.getParam<UUID>("id", true) { UUID.fromString(it) }!!
                 deleteApuUseCase(apuId)
                 call.respond(HttpStatusCode.NoContent)
-            }
-        }
-
-        route("/by-term") {
-            get {
-                val name = call.getParam<String>("term", true) { it }!!
-                val apu = readApuByTermUseCase(name)
-                call.respond(apu)
             }
         }
     }
