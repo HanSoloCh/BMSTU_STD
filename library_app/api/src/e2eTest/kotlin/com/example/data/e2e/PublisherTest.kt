@@ -70,7 +70,7 @@ class PublisherE2ETest : BaseE2ETest() {
 
         // 3. UPDATE
         val updated = publisher.copy(name = "O’Reilly Media")
-        val updateResponse = client.patch("/publisher") {
+        val updateResponse = client.put("/publisher") {
             contentType(ContentType.Application.Json)
             setBody(testJson.encodeToString(PublisherModel.serializer(), updated))
         }

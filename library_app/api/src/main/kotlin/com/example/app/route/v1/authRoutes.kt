@@ -1,4 +1,4 @@
-package com.example.app.route
+package com.example.app.route.v1
 
 import com.example.domain.usecase.LoginUserUseCase
 import io.ktor.http.HttpStatusCode

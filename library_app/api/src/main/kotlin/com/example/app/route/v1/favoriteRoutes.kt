@@ -1,4 +1,4 @@
-package com.example.app.route
+package com.example.app.route.v1
 
 import com.example.app.util.getParam
 import com.example.domain.usecase.favorite.CreateFavoriteUseCase
@@ -48,11 +48,7 @@ fun Route.favoriteRoutes() {
     route("/user/{userId}/favorite") {
         get {
             val userId = call.getParam<UUID>("userId", true) { UUID.fromString(it) }!!
-            val page = call.request.queryParameters["page"]?.toIntOrNull() ?: 0
-            val size = call.request.queryParameters["size"]?.toIntOrNull() ?: 20
-
-            val result = readFavoriteByUserIdUseCase(userId, page, size)
-
+            val result = readFavoriteByUserIdUseCase(userId)
             call.respond(HttpStatusCode.OK, result)
         }
     }
