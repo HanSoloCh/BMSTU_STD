@@ -15,10 +15,6 @@ echo "  postgres: $POSTGRES_ID"
 echo "  mongo: $MONGO_ID"
 echo ""
 
-# Ищем метрики в cAdvisor
-echo "=== Метрики CPU ==="
-curl -s "http://localhost:8080/metrics" | grep "container_cpu_usage_seconds_total" | grep -E "($APP_ID|$POSTGRES_ID|$MONGO_ID)" | head -3
-
 echo ""
 echo "=== Рабочие запросы для Prometheus ==="
 echo ""
