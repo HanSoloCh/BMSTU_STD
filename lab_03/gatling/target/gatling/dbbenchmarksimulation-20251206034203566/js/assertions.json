@@ -1,0 +1,10 @@
+{
+  "simulation": "dbbenchmark.DbBenchmarkSimulation",
+  "simulationId": "dbbenchmarksimulation-20251206034203566",
+  "start": 1764992524656,
+  "description": "",
+  "scenarios": ["GetUserById"],
+  "assertions": [
+
+  ]
+}

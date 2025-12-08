@@ -1,0 +1,488 @@
+[
+  {
+    "timestamp": "2025-12-06T11:05:53.975101",
+    "timestamp_unix": 1765008353.9751413,
+    "containers": {
+      "benchmark_prometheus": {
+        "cpu_percent": 0.7640440641930073,
+        "memory_mb": 47.66015625
+      },
+      "benchmark_app": {
+        "cpu_percent": 0.15360198084369137,
+        "memory_mb": 43.3359375
+      },
+      "benchmark_postgres": {
+        "cpu_percent": 0.027170002895589948,
+        "memory_mb": 124.52734375
+      },
+      "benchmark_mongo": {
+        "cpu_percent": 0.4688703084834102,
+        "memory_mb": 195.80078125
+      },
+      "benchmark_cadvisor": {
+        "cpu_percent": 4.29785948341096,
+        "memory_mb": 98.796875
+      }
+    },
+    "db_type": "mongo"
+  },
+  {
+    "timestamp": "2025-12-06T11:05:59.081551",
+    "timestamp_unix": 1765008359.0815778,
+    "containers": {
+      "benchmark_prometheus": {
+        "cpu_percent": 0.8569709379994671,
+        "memory_mb": 47.98046875
+      },
+      "benchmark_app": {
+        "cpu_percent": 0.1731595369105852,
+        "memory_mb": 43.3359375
+      },
+      "benchmark_postgres": {
+        "cpu_percent": 0.02717196384521464,
+        "memory_mb": 124.52734375
+      },
+      "benchmark_mongo": {
+        "cpu_percent": 0.5272749617892284,
+        "memory_mb": 195.80078125
+      },
+      "benchmark_cadvisor": {
+        "cpu_percent": 4.959576537546197,
+        "memory_mb": 99.11328125
+      }
+    },
+    "db_type": "mongo"
+  },
+  {
+    "timestamp": "2025-12-06T11:06:04.169306",
+    "timestamp_unix": 1765008364.169327,
+    "containers": {
+      "benchmark_prometheus": {
+        "cpu_percent": 0.9798109528212979,
+        "memory_mb": 49.3984375
+      },
+      "benchmark_app": {
+        "cpu_percent": 0.19031971357754254,
+        "memory_mb": 43.3359375
+      },
+      "benchmark_postgres": {
+        "cpu_percent": 0.026790467396378078,
+        "memory_mb": 124.52734375
+      },
+      "benchmark_mongo": {
+        "cpu_percent": 0.592320458756964,
+        "memory_mb": 195.80078125
+      },
+      "benchmark_cadvisor": {
+        "cpu_percent": 5.431814114828792,
+        "memory_mb": 98.62890625
+      }
+    },
+    "db_type": "mongo"
+  },
+  {
+    "timestamp": "2025-12-06T11:06:09.257546",
+    "timestamp_unix": 1765008369.2575722,
+    "containers": {
+      "benchmark_prometheus": {
+        "cpu_percent": 1.0722592120961434,
+        "memory_mb": 49.515625
+      },
+      "benchmark_app": {
+        "cpu_percent": 0.7246326955349388,
+        "memory_mb": 43.47265625
+      },
+      "benchmark_postgres": {
+        "cpu_percent": 0.038943905639100385,
+        "memory_mb": 124.52734375
+      },
+      "benchmark_mongo": {
+        "cpu_percent": 0.7714239974450865,
+        "memory_mb": 195.86328125
+      },
+      "benchmark_cadvisor": {
+        "cpu_percent": 5.94528649797796,
+        "memory_mb": 98.89453125
+      }
+    },
+    "db_type": "mongo"
+  },
+  {
+    "timestamp": "2025-12-06T11:06:14.361822",
+    "timestamp_unix": 1765008374.3618412,
+    "containers": {
+      "benchmark_prometheus": {
+        "cpu_percent": 1.1664329583129516,
+        "memory_mb": 48.09375
+      },
+      "benchmark_app": {
+        "cpu_percent": 1.4521137264888855,
+        "memory_mb": 43.4765625
+      },
+      "benchmark_postgres": {
+        "cpu_percent": 0.038455693454427335,
+        "memory_mb": 124.52734375
+      },
+      "benchmark_mongo": {
+        "cpu_percent": 1.0174251094519235,
+        "memory_mb": 195.8984375
+      },
+      "benchmark_cadvisor": {
+        "cpu_percent": 6.561702561063686,
+        "memory_mb": 98.65625
+      }
+    },
+    "db_type": "mongo"
+  },
+  {
+    "timestamp": "2025-12-06T11:06:19.449230",
+    "timestamp_unix": 1765008379.4492497,
+    "containers": {
+      "benchmark_prometheus": {
+        "cpu_percent": 1.0243067430586161,
+        "memory_mb": 47.46484375
+      },
+      "benchmark_app": {
+        "cpu_percent": 2.3956728381925227,
+        "memory_mb": 43.47265625
+      },
+      "benchmark_postgres": {
+        "cpu_percent": 0.03966818623421253,
+        "memory_mb": 124.52734375
+      },
+      "benchmark_mongo": {
+        "cpu_percent": 1.2905893276530684,
+        "memory_mb": 195.8984375
+      },
+      "benchmark_cadvisor": {
+        "cpu_percent": 6.598610355212073,
+        "memory_mb": 98.9140625
+      }
+    },
+    "db_type": "mongo"
+  },
+  {
+    "timestamp": "2025-12-06T11:06:24.535669",
+    "timestamp_unix": 1765008384.5356948,
+    "containers": {
+      "benchmark_prometheus": {
+        "cpu_percent": 1.10237901370057,
+        "memory_mb": 47.51953125
+      },
+      "benchmark_app": {
+        "cpu_percent": 3.2471606660585572,
+        "memory_mb": 43.71875
+      },
+      "benchmark_postgres": {
+        "cpu_percent": 0.024818227629399874,
+        "memory_mb": 124.52734375
+      },
+      "benchmark_mongo": {
+        "cpu_percent": 1.508594790925186,
+        "memory_mb": 195.8984375
+      },
+      "benchmark_cadvisor": {
+        "cpu_percent": 6.452287247636083,
+        "memory_mb": 98.921875
+      }
+    },
+    "db_type": "mongo"
+  },
+  {
+    "timestamp": "2025-12-06T11:06:29.626225",
+    "timestamp_unix": 1765008389.626252,
+    "containers": {
+      "benchmark_prometheus": {
+        "cpu_percent": 1.1077995458625969,
+        "memory_mb": 44.6328125
+      },
+      "benchmark_app": {
+        "cpu_percent": 4.191813395937823,
+        "memory_mb": 43.48046875
+      },
+      "benchmark_postgres": {
+        "cpu_percent": 0.03875489514328573,
+        "memory_mb": 124.52734375
+      },
+      "benchmark_mongo": {
+        "cpu_percent": 1.7297222830450345,
+        "memory_mb": 195.8984375
+      },
+      "benchmark_cadvisor": {
+        "cpu_percent": 6.43842866301019,
+        "memory_mb": 98.6875
+      }
+    },
+    "db_type": "mongo"
+  },
+  {
+    "timestamp": "2025-12-06T11:06:34.721770",
+    "timestamp_unix": 1765008394.7217894,
+    "containers": {
+      "benchmark_prometheus": {
+        "cpu_percent": 1.017667208136168,
+        "memory_mb": 44.6796875
+      },
+      "benchmark_app": {
+        "cpu_percent": 5.108760604942826,
+        "memory_mb": 43.71875
+      },
+      "benchmark_postgres": {
+        "cpu_percent": 0.03953549501511486,
+        "memory_mb": 124.52734375
+      },
+      "benchmark_mongo": {
+        "cpu_percent": 1.9951210177152436,
+        "memory_mb": 195.96875
+      },
+      "benchmark_cadvisor": {
+        "cpu_percent": 6.439904962275104,
+        "memory_mb": 98.9453125
+      }
+    },
+    "db_type": "mongo"
+  },
+  {
+    "timestamp": "2025-12-06T11:06:39.810799",
+    "timestamp_unix": 1765008399.810825,
+    "containers": {
+      "benchmark_prometheus": {
+        "cpu_percent": 1.1167482454561812,
+        "memory_mb": 45.6171875
+      },
+      "benchmark_app": {
+        "cpu_percent": 5.946428055214279,
+        "memory_mb": 43.72265625
+      },
+      "benchmark_postgres": {
+        "cpu_percent": 0.03882246909946984,
+        "memory_mb": 124.52734375
+      },
+      "benchmark_mongo": {
+        "cpu_percent": 2.2368590438996163,
+        "memory_mb": 195.96875
+      },
+      "benchmark_cadvisor": {
+        "cpu_percent": 6.291581379397483,
+        "memory_mb": 98.73046875
+      }
+    },
+    "db_type": "mongo"
+  },
+  {
+    "timestamp": "2025-12-06T11:06:44.904385",
+    "timestamp_unix": 1765008404.9044144,
+    "containers": {
+      "benchmark_prometheus": {
+        "cpu_percent": 1.1943551170945295,
+        "memory_mb": 45.98828125
+      },
+      "benchmark_app": {
+        "cpu_percent": 6.967244186684719,
+        "memory_mb": 43.47265625
+      },
+      "benchmark_postgres": {
+        "cpu_percent": 0.03761589403973575,
+        "memory_mb": 124.52734375
+      },
+      "benchmark_mongo": {
+        "cpu_percent": 2.5131457968476356,
+        "memory_mb": 195.96875
+      },
+      "benchmark_cadvisor": {
+        "cpu_percent": 6.261256776192056,
+        "memory_mb": 101.49609375
+      }
+    },
+    "db_type": "mongo"
+  },
+  {
+    "timestamp": "2025-12-06T11:06:50.009235",
+    "timestamp_unix": 1765008410.009269,
+    "containers": {
+      "benchmark_prometheus": {
+        "cpu_percent": 1.223954421148587,
+        "memory_mb": 46.046875
+      },
+      "benchmark_app": {
+        "cpu_percent": 6.969258839367962,
+        "memory_mb": 43.46484375
+      },
+      "benchmark_postgres": {
+        "cpu_percent": 0.04235426218770507,
+        "memory_mb": 124.53125
+      },
+      "benchmark_mongo": {
+        "cpu_percent": 2.5420524691358017,
+        "memory_mb": 195.96484375
+      },
+      "benchmark_cadvisor": {
+        "cpu_percent": 6.2462800444173805,
+        "memory_mb": 102.44140625
+      }
+    },
+    "db_type": "mongo"
+  },
+  {
+    "timestamp": "2025-12-06T11:06:55.113980",
+    "timestamp_unix": 1765008415.114016,
+    "containers": {
+      "benchmark_prometheus": {
+        "cpu_percent": 1.2520188028382992,
+        "memory_mb": 46.12109375
+      },
+      "benchmark_app": {
+        "cpu_percent": 7.194764771542024,
+        "memory_mb": 43.46484375
+      },
+      "benchmark_postgres": {
+        "cpu_percent": 0.04146573314077881,
+        "memory_mb": 124.53125
+      },
+      "benchmark_mongo": {
+        "cpu_percent": 2.530619436875567,
+        "memory_mb": 195.96484375
+      },
+      "benchmark_cadvisor": {
+        "cpu_percent": 6.127695442088564,
+        "memory_mb": 102.19921875
+      }
+    },
+    "db_type": "mongo"
+  },
+  {
+    "timestamp": "2025-12-06T11:07:00.221548",
+    "timestamp_unix": 1765008420.2215827,
+    "containers": {
+      "benchmark_prometheus": {
+        "cpu_percent": 1.2490349946977726,
+        "memory_mb": 46.171875
+      },
+      "benchmark_app": {
+        "cpu_percent": 7.108675856835715,
+        "memory_mb": 43.46484375
+      },
+      "benchmark_postgres": {
+        "cpu_percent": 0.04187811196648734,
+        "memory_mb": 124.53125
+      },
+      "benchmark_mongo": {
+        "cpu_percent": 2.527968501635214,
+        "memory_mb": 195.96484375
+      },
+      "benchmark_cadvisor": {
+        "cpu_percent": 6.258151156662853,
+        "memory_mb": 102.7265625
+      }
+    },
+    "db_type": "mongo"
+  },
+  {
+    "timestamp": "2025-12-06T11:07:05.319869",
+    "timestamp_unix": 1765008425.319888,
+    "containers": {
+      "benchmark_prometheus": {
+        "cpu_percent": 1.3153054296566784,
+        "memory_mb": 46.23828125
+      },
+      "benchmark_app": {
+        "cpu_percent": 6.681630450687738,
+        "memory_mb": 43.46484375
+      },
+      "benchmark_postgres": {
+        "cpu_percent": 0.029175922608384138,
+        "memory_mb": 124.53125
+      },
+      "benchmark_mongo": {
+        "cpu_percent": 2.413290690701602,
+        "memory_mb": 195.96484375
+      },
+      "benchmark_cadvisor": {
+        "cpu_percent": 6.263643011224455,
+        "memory_mb": 102.48046875
+      }
+    },
+    "db_type": "mongo"
+  },
+  {
+    "timestamp": "2025-12-06T11:07:10.410965",
+    "timestamp_unix": 1765008430.4109967,
+    "containers": {
+      "benchmark_prometheus": {
+        "cpu_percent": 1.3116217353904722,
+        "memory_mb": 45.421875
+      },
+      "benchmark_app": {
+        "cpu_percent": 5.867054549378607,
+        "memory_mb": 43.46484375
+      },
+      "benchmark_postgres": {
+        "cpu_percent": 0.04167512874446938,
+        "memory_mb": 124.52734375
+      },
+      "benchmark_mongo": {
+        "cpu_percent": 2.2106472044263246,
+        "memory_mb": 195.96484375
+      },
+      "benchmark_cadvisor": {
+        "cpu_percent": 6.32157913799348,
+        "memory_mb": 103.390625
+      }
+    },
+    "db_type": "mongo"
+  },
+  {
+    "timestamp": "2025-12-06T11:07:15.514846",
+    "timestamp_unix": 1765008435.5148752,
+    "containers": {
+      "benchmark_prometheus": {
+        "cpu_percent": 1.366015401377629,
+        "memory_mb": 45.46875
+      },
+      "benchmark_app": {
+        "cpu_percent": 4.9854249375091895,
+        "memory_mb": 43.46484375
+      },
+      "benchmark_postgres": {
+        "cpu_percent": 0.04297772762651849,
+        "memory_mb": 124.52734375
+      },
+      "benchmark_mongo": {
+        "cpu_percent": 1.9541878911366612,
+        "memory_mb": 195.96875
+      },
+      "benchmark_cadvisor": {
+        "cpu_percent": 6.448116463504186,
+        "memory_mb": 103.39453125
+      }
+    },
+    "db_type": "mongo"
+  },
+  {
+    "timestamp": "2025-12-06T11:07:20.612677",
+    "timestamp_unix": 1765008440.6127067,
+    "containers": {
+      "benchmark_prometheus": {
+        "cpu_percent": 1.3734046834979874,
+        "memory_mb": 46.32421875
+      },
+      "benchmark_app": {
+        "cpu_percent": 4.105204684763572,
+        "memory_mb": 43.46484375
+      },
+      "benchmark_postgres": {
+        "cpu_percent": 0.04217362588977806,
+        "memory_mb": 124.52734375
+      },
+      "benchmark_mongo": {
+        "cpu_percent": 1.7296207727313297,
+        "memory_mb": 195.96875
+      },
+      "benchmark_cadvisor": {
+        "cpu_percent": 6.6656482051653585,
+        "memory_mb": 108.5703125
+      }
+    },
+    "db_type": "mongo"
+  }
+]
