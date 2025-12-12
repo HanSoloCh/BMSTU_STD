@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "[hook] Running detekt, ktlint, halstead..."
+./gradlew detekt ktlintCheck halstead --quiet
+echo "[hook] Static analysis passed."
+
+
