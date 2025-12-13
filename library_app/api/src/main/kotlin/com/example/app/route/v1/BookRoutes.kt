@@ -32,6 +32,11 @@ fun Route.bookRoutes() {
     val updateBookUseCase by inject<UpdateBookUseCase>()
     val deleteBookUseCase by inject<DeleteBookUseCase>()
 
+    val readBookByAuthorUseCase by inject<ReadBookByAuthorUseCase>()
+    val readBookByBbkUseCase by inject<ReadBookByBbkUseCase>()
+    val readBookByPublisherUseCase by inject<ReadBookByPublisherUseCase>()
+    val readBookBySentenceUseCase by inject<ReadBookBySentenceUseCase>()
+
     route("/book") {
         val readAllBooksUseCase by inject<ReadBooksUseCase>()
 
@@ -69,41 +74,29 @@ fun Route.bookRoutes() {
         }
         route("/search") {
             get {
-                handleBookSearch()
-            }
+                val authorId = call.getParam<UUID>("authorId") { UUID.fromString(it) }
+                val bbkId = call.getParam<UUID>("bbkId") { UUID.fromString(it) }
+                val publisherId = call.getParam<UUID>("publisherId") { UUID.fromString(it) }
+                val query = call.request.queryParameters["q"]
+
+                val activeFilters = listOfNotNull(authorId, bbkId, publisherId, query)
+
+                if (activeFilters.isEmpty()) {
+                    call.respond(HttpStatusCode.BadRequest, "Filter query is required")
+                }
+                if (activeFilters.size > 1) {
+                    call.respond(HttpStatusCode.BadRequest, "Filter query is more than one filter")
+                }
+
+                val result =
+                    when {
+                        authorId != null -> readBookByAuthorUseCase(authorId)
+                        bbkId != null -> readBookByBbkUseCase(bbkId)
+                        publisherId != null -> readBookByPublisherUseCase(publisherId)
+                        query != null -> readBookBySentenceUseCase(query)
+                        else -> emptyFlow<BookModel>()
+                    }
+                call.respond(result)            }
         }
     }
-}
-
-private suspend fun ApplicationCall.handleBookSearch() {
-    val readBookByAuthorUseCase by inject<ReadBookByAuthorUseCase>()
-    val readBookByBbkUseCase by inject<ReadBookByBbkUseCase>()
-    val readBookByPublisherUseCase by inject<ReadBookByPublisherUseCase>()
-    val readBookBySentenceUseCase by inject<ReadBookBySentenceUseCase>()
-
-    val authorId = call.getParam<UUID>("authorId") { UUID.fromString(it) }
-    val bbkId = call.getParam<UUID>("bbkId") { UUID.fromString(it) }
-    val publisherId = call.getParam<UUID>("publisherId") { UUID.fromString(it) }
-    val query = call.request.queryParameters["q"]
-
-    val activeFilters = listOfNotNull(authorId, bbkId, publisherId, query)
-
-    if (activeFilters.isEmpty()) {
-        call.respond(HttpStatusCode.BadRequest, "Filter query is required")
-        return
-    }
-    if (activeFilters.size > 1) {
-        call.respond(HttpStatusCode.BadRequest, "Filter query is more than one filter")
-        return
-    }
-
-    val result =
-        when {
-            authorId != null -> readBookByAuthorUseCase(authorId)
-            bbkId != null -> readBookByBbkUseCase(bbkId)
-            publisherId != null -> readBookByPublisherUseCase(publisherId)
-            query != null -> readBookBySentenceUseCase(query)
-            else -> emptyFlow<BookModel>()
-        }
-    call.respond(result)
 }

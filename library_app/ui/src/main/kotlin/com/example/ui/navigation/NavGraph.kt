@@ -97,7 +97,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier = Modifier) {
             route = Screen.UserProfile.route,
             arguments = listOf(navArgument("userId") { type = NavType.StringType })
         ) {
-            ProfileScreen(navController = navController)
+            ProfileScreen()
         }
         composable(
             route = Screen.UserIssuance.route,

@@ -76,21 +76,14 @@ import io.ktor.server.config.ApplicationConfig
 import org.koin.dsl.module
 import javax.sql.DataSource
 
-fun appModule(config: ApplicationConfig) =
-    module {
-        configureDatabase(config)
-        configureRepositories()
-        configureUseCases()
-    }
-
-private fun org.koin.dsl.Module.configureDatabase(config: ApplicationConfig) {
+fun appModule(config: ApplicationConfig) = module {
     single {
         DatabaseBuilder.DatabaseConfig(
             url = config.property("ktor.database.url").getString(),
             driver = config.property("ktor.database.driver").getString(),
             username = config.property("ktor.database.user").getString(),
             password = config.property("ktor.database.password").getString(),
-            maximumPoolSize = config.property("ktor.database.maxPoolSize").getString().toInt(),
+            maximumPoolSize = config.property("ktor.database.maxPoolSize").getString().toInt()
         )
     }
     single<DataSource> { DatabaseBuilder.createDataSource(get()) }
@@ -99,9 +92,7 @@ private fun org.koin.dsl.Module.configureDatabase(config: ApplicationConfig) {
         DatabaseBuilder.runMigrations(db)
         db
     }
-}
 
-private fun org.koin.dsl.Module.configureRepositories() {
     single<ApuRepository> { ApuRepositoryImpl(get()) }
     single<AuthorRepository> { AuthorRepositoryImpl(get()) }
     single<BbkRepository> { BbkRepositoryImpl(get()) }
@@ -112,85 +103,63 @@ private fun org.koin.dsl.Module.configureRepositories() {
     single<ReservationRepository> { ReservationRepositoryImpl(get()) }
     single<IssuanceRepository> { IssuanceRepositoryImpl(get()) }
     single<UserFavoriteRepository> { UserFavoriteRepositoryImpl(get()) }
-}
 
-private fun org.koin.dsl.Module.configureUseCases() {
-    configureAuthorUseCases()
-    configureApuUseCases()
-    configureBbkUseCases()
-    configurePublisherUseCases()
-    configureUserUseCases()
-    configureReservationUseCases()
-    configureIssuanceUseCases()
-    configureQueueUseCases()
-    configureBookUseCases()
-    configureFavoriteUseCases()
-}
-
-private fun org.koin.dsl.Module.configureAuthorUseCases() {
+    // Author use case
     single { ReadAuthorByIdUseCase(get()) }
     single { CreateAuthorUseCase(get()) }
     single { UpdateAuthorUseCase(get()) }
     single { DeleteAuthorUseCase(get()) }
     single { ReadAuthorByNameUseCase(get()) }
-}
 
-private fun org.koin.dsl.Module.configureApuUseCases() {
+    // Apu use case
     single { ReadApuByIdUseCase(get()) }
     single { CreateApuUseCase(get(), get()) }
     single { UpdateApuUseCase(get(), get()) }
     single { DeleteApuUseCase(get()) }
     single { ReadApuByTermUseCase(get()) }
-}
 
-private fun org.koin.dsl.Module.configureBbkUseCases() {
+    // Bbk use case
     single { ReadBbkByIdUseCase(get()) }
     single { CreateBbkUseCase(get()) }
     single { UpdateBbkUseCase(get()) }
     single { DeleteBbkUseCase(get()) }
     single { ReadBbkByCodeUseCase(get()) }
-}
 
-private fun org.koin.dsl.Module.configurePublisherUseCases() {
+    // Publisher use case
     single { ReadPublisherByIdUseCase(get()) }
     single { CreatePublisherUseCase(get()) }
     single { UpdatePublisherUseCase(get()) }
     single { DeletePublisherUseCase(get()) }
     single { ReadPublisherByNameUseCase(get()) }
-}
 
-private fun org.koin.dsl.Module.configureUserUseCases() {
+    // User use case
     single { ReadUserByIdUseCase(get()) }
     single { ReadUserByPhoneUseCase(get()) }
     single { CreateUserUseCase(get()) }
     single { UpdateUserUseCase(get()) }
     single { DeleteUserUseCase(get()) }
     single { LoginUserUseCase(get()) }
-}
 
-private fun org.koin.dsl.Module.configureReservationUseCases() {
+    // Reservation use case
     single { CreateReservationUseCase(get(), get(), get()) }
     single { UpdateReservationUseCase(get(), get(), get()) }
     single { DeleteReservationUseCase(get()) }
     single { ReadReservationUseCase(get()) }
-}
 
-private fun org.koin.dsl.Module.configureIssuanceUseCases() {
+    // Issuance use case
     single { CreateIssuanceUseCase(get(), get(), get(), get()) }
     single { UpdateIssuanceUseCase(get(), get(), get()) }
     single { DeleteIssuanceUseCase(get()) }
     single { ReadIssuanceUseCase(get()) }
-}
 
-private fun org.koin.dsl.Module.configureQueueUseCases() {
+    // Queue use case
     single { CreateQueueUseCase(get(), get(), get()) }
     single { UpdateQueueUseCase(get(), get(), get()) }
     single { DeleteQueueUseCase(get()) }
     single { ReadQueueUseCase(get()) }
     single { GetQueueUseCase(get(), get(), get()) }
-}
 
-private fun org.koin.dsl.Module.configureBookUseCases() {
+    // Book use case
     single { ReadBookByIdUseCase(get()) }
     single { CreateBookUseCase(get(), get(), get(), get()) }
     single { UpdateBookUseCase(get(), get(), get(), get()) }
@@ -200,9 +169,8 @@ private fun org.koin.dsl.Module.configureBookUseCases() {
     single { ReadBookByAuthorUseCase(get()) }
     single { ReadBookBySentenceUseCase(get(), get()) }
     single { ReadBooksUseCase(get()) }
-}
 
-private fun org.koin.dsl.Module.configureFavoriteUseCases() {
+    // Favorite use case
     single { CreateFavoriteUseCase(get(), get(), get()) }
     single { DeleteFavoriteUseCase(get()) }
     single { ReadFavoriteByUserIdUseCase(get()) }
