@@ -76,102 +76,103 @@ import io.ktor.server.config.ApplicationConfig
 import org.koin.dsl.module
 import javax.sql.DataSource
 
-fun appModule(config: ApplicationConfig) = module {
-    single {
-        DatabaseBuilder.DatabaseConfig(
-            url = config.property("ktor.database.url").getString(),
-            driver = config.property("ktor.database.driver").getString(),
-            username = config.property("ktor.database.user").getString(),
-            password = config.property("ktor.database.password").getString(),
-            maximumPoolSize = config.property("ktor.database.maxPoolSize").getString().toInt()
-        )
+fun appModule(config: ApplicationConfig) =
+    module {
+        single {
+            DatabaseBuilder.DatabaseConfig(
+                url = config.property("ktor.database.url").getString(),
+                driver = config.property("ktor.database.driver").getString(),
+                username = config.property("ktor.database.user").getString(),
+                password = config.property("ktor.database.password").getString(),
+                maximumPoolSize = config.property("ktor.database.maxPoolSize").getString().toInt(),
+            )
+        }
+        single<DataSource> { DatabaseBuilder.createDataSource(get()) }
+        single {
+            val db = DatabaseBuilder.connect(get())
+            DatabaseBuilder.runMigrations(db)
+            db
+        }
+
+        single<ApuRepository> { ApuRepositoryImpl(get()) }
+        single<AuthorRepository> { AuthorRepositoryImpl(get()) }
+        single<BbkRepository> { BbkRepositoryImpl(get()) }
+        single<PublisherRepository> { PublisherRepositoryImpl(get()) }
+        single<BookRepository> { BookRepositoryImpl(get()) }
+        single<UserRepository> { UserRepositoryImpl(get()) }
+        single<QueueRepository> { QueueRepositoryImpl(get()) }
+        single<ReservationRepository> { ReservationRepositoryImpl(get()) }
+        single<IssuanceRepository> { IssuanceRepositoryImpl(get()) }
+        single<UserFavoriteRepository> { UserFavoriteRepositoryImpl(get()) }
+
+        // Author use case
+        single { ReadAuthorByIdUseCase(get()) }
+        single { CreateAuthorUseCase(get()) }
+        single { UpdateAuthorUseCase(get()) }
+        single { DeleteAuthorUseCase(get()) }
+        single { ReadAuthorByNameUseCase(get()) }
+
+        // Apu use case
+        single { ReadApuByIdUseCase(get()) }
+        single { CreateApuUseCase(get(), get()) }
+        single { UpdateApuUseCase(get(), get()) }
+        single { DeleteApuUseCase(get()) }
+        single { ReadApuByTermUseCase(get()) }
+
+        // Bbk use case
+        single { ReadBbkByIdUseCase(get()) }
+        single { CreateBbkUseCase(get()) }
+        single { UpdateBbkUseCase(get()) }
+        single { DeleteBbkUseCase(get()) }
+        single { ReadBbkByCodeUseCase(get()) }
+
+        // Publisher use case
+        single { ReadPublisherByIdUseCase(get()) }
+        single { CreatePublisherUseCase(get()) }
+        single { UpdatePublisherUseCase(get()) }
+        single { DeletePublisherUseCase(get()) }
+        single { ReadPublisherByNameUseCase(get()) }
+
+        // User use case
+        single { ReadUserByIdUseCase(get()) }
+        single { ReadUserByPhoneUseCase(get()) }
+        single { CreateUserUseCase(get()) }
+        single { UpdateUserUseCase(get()) }
+        single { DeleteUserUseCase(get()) }
+        single { LoginUserUseCase(get()) }
+
+        // Reservation use case
+        single { CreateReservationUseCase(get(), get(), get()) }
+        single { UpdateReservationUseCase(get(), get(), get()) }
+        single { DeleteReservationUseCase(get()) }
+        single { ReadReservationUseCase(get()) }
+
+        // Issuance use case
+        single { CreateIssuanceUseCase(get(), get(), get(), get()) }
+        single { UpdateIssuanceUseCase(get(), get(), get()) }
+        single { DeleteIssuanceUseCase(get()) }
+        single { ReadIssuanceUseCase(get()) }
+
+        // Queue use case
+        single { CreateQueueUseCase(get(), get(), get()) }
+        single { UpdateQueueUseCase(get(), get(), get()) }
+        single { DeleteQueueUseCase(get()) }
+        single { ReadQueueUseCase(get()) }
+        single { GetQueueUseCase(get(), get(), get()) }
+
+        // Book use case
+        single { ReadBookByIdUseCase(get()) }
+        single { CreateBookUseCase(get(), get(), get(), get()) }
+        single { UpdateBookUseCase(get(), get(), get(), get()) }
+        single { DeleteBookUseCase(get()) }
+        single { ReadBookByBbkUseCase(get()) }
+        single { ReadBookByPublisherUseCase(get()) }
+        single { ReadBookByAuthorUseCase(get()) }
+        single { ReadBookBySentenceUseCase(get(), get()) }
+        single { ReadBooksUseCase(get()) }
+
+        // Favorite use case
+        single { CreateFavoriteUseCase(get(), get(), get()) }
+        single { DeleteFavoriteUseCase(get()) }
+        single { ReadFavoriteByUserIdUseCase(get()) }
     }
-    single<DataSource> { DatabaseBuilder.createDataSource(get()) }
-    single {
-        val db = DatabaseBuilder.connect(get())
-        DatabaseBuilder.runMigrations(db)
-        db
-    }
-
-    single<ApuRepository> { ApuRepositoryImpl(get()) }
-    single<AuthorRepository> { AuthorRepositoryImpl(get()) }
-    single<BbkRepository> { BbkRepositoryImpl(get()) }
-    single<PublisherRepository> { PublisherRepositoryImpl(get()) }
-    single<BookRepository> { BookRepositoryImpl(get()) }
-    single<UserRepository> { UserRepositoryImpl(get()) }
-    single<QueueRepository> { QueueRepositoryImpl(get()) }
-    single<ReservationRepository> { ReservationRepositoryImpl(get()) }
-    single<IssuanceRepository> { IssuanceRepositoryImpl(get()) }
-    single<UserFavoriteRepository> { UserFavoriteRepositoryImpl(get()) }
-
-    // Author use case
-    single { ReadAuthorByIdUseCase(get()) }
-    single { CreateAuthorUseCase(get()) }
-    single { UpdateAuthorUseCase(get()) }
-    single { DeleteAuthorUseCase(get()) }
-    single { ReadAuthorByNameUseCase(get()) }
-
-    // Apu use case
-    single { ReadApuByIdUseCase(get()) }
-    single { CreateApuUseCase(get(), get()) }
-    single { UpdateApuUseCase(get(), get()) }
-    single { DeleteApuUseCase(get()) }
-    single { ReadApuByTermUseCase(get()) }
-
-    // Bbk use case
-    single { ReadBbkByIdUseCase(get()) }
-    single { CreateBbkUseCase(get()) }
-    single { UpdateBbkUseCase(get()) }
-    single { DeleteBbkUseCase(get()) }
-    single { ReadBbkByCodeUseCase(get()) }
-
-    // Publisher use case
-    single { ReadPublisherByIdUseCase(get()) }
-    single { CreatePublisherUseCase(get()) }
-    single { UpdatePublisherUseCase(get()) }
-    single { DeletePublisherUseCase(get()) }
-    single { ReadPublisherByNameUseCase(get()) }
-
-    // User use case
-    single { ReadUserByIdUseCase(get()) }
-    single { ReadUserByPhoneUseCase(get()) }
-    single { CreateUserUseCase(get()) }
-    single { UpdateUserUseCase(get()) }
-    single { DeleteUserUseCase(get()) }
-    single { LoginUserUseCase(get()) }
-
-    // Reservation use case
-    single { CreateReservationUseCase(get(), get(), get()) }
-    single { UpdateReservationUseCase(get(), get(), get()) }
-    single { DeleteReservationUseCase(get()) }
-    single { ReadReservationUseCase(get()) }
-
-    // Issuance use case
-    single { CreateIssuanceUseCase(get(), get(), get(), get()) }
-    single { UpdateIssuanceUseCase(get(), get(), get()) }
-    single { DeleteIssuanceUseCase(get()) }
-    single { ReadIssuanceUseCase(get()) }
-
-    // Queue use case
-    single { CreateQueueUseCase(get(), get(), get()) }
-    single { UpdateQueueUseCase(get(), get(), get()) }
-    single { DeleteQueueUseCase(get()) }
-    single { ReadQueueUseCase(get()) }
-    single { GetQueueUseCase(get(), get(), get()) }
-
-    // Book use case
-    single { ReadBookByIdUseCase(get()) }
-    single { CreateBookUseCase(get(), get(), get(), get()) }
-    single { UpdateBookUseCase(get(), get(), get(), get()) }
-    single { DeleteBookUseCase(get()) }
-    single { ReadBookByBbkUseCase(get()) }
-    single { ReadBookByPublisherUseCase(get()) }
-    single { ReadBookByAuthorUseCase(get()) }
-    single { ReadBookBySentenceUseCase(get(), get()) }
-    single { ReadBooksUseCase(get()) }
-
-    // Favorite use case
-    single { CreateFavoriteUseCase(get(), get(), get()) }
-    single { DeleteFavoriteUseCase(get()) }
-    single { ReadFavoriteByUserIdUseCase(get()) }
-}

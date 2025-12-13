@@ -40,63 +40,106 @@ fun Route.bookRoutes() {
     route("/book") {
         val readAllBooksUseCase by inject<ReadBooksUseCase>()
 
-        post {
-            val book = call.receive<BookModel>()
-            val createdId = createBookUseCase(book)
-            call.respond(HttpStatusCode.Created, createdId)
-        }
-        put {
-            val book = call.receive<BookModel>()
-            updateBookUseCase(book)
-            call.respond(HttpStatusCode.NoContent)
-        }
-        get {
-            val page = call.getParam<Int>("page") { it.toInt() } ?: 1
-            val pageSize = call.getParam<Int>("pageSize") { it.toInt() } ?: 10
-            val books = readAllBooksUseCase(page, pageSize)
-            call.respond(HttpStatusCode.OK, books)
-        }
+        post { handleCreate(call, createBookUseCase) }
+        put { handleUpdate(call, updateBookUseCase) }
+        get { handleGetAll(call, readAllBooksUseCase) }
+
         route("/{id}") {
-            get {
-                val bookId = call.getParam<UUID>("id", true) { UUID.fromString(it) }!!
-                val book = readBookByIdUseCase(bookId)
-                if (book == null) {
-                    call.respond(HttpStatusCode.NotFound, "Book not found")
-                } else {
-                    call.respond(book)
-                }
-            }
-            delete {
-                val bookId = call.getParam<UUID>("id", true) { UUID.fromString(it) }!!
-                deleteBookUseCase(bookId)
-                call.respond(HttpStatusCode.NoContent)
-            }
+            get { handleGetById(call, readBookByIdUseCase) }
+            delete { handleDeleteById(call, deleteBookUseCase) }
         }
+
         route("/search") {
             get {
-                val authorId = call.getParam<UUID>("authorId") { UUID.fromString(it) }
-                val bbkId = call.getParam<UUID>("bbkId") { UUID.fromString(it) }
-                val publisherId = call.getParam<UUID>("publisherId") { UUID.fromString(it) }
-                val query = call.request.queryParameters["q"]
+                handleSearch(
+                    call,
+                    readBookByAuthorUseCase,
+                    readBookByBbkUseCase,
+                    readBookByPublisherUseCase,
+                    readBookBySentenceUseCase,
+                )
+            }
+        }
+    }
+}
 
-                val activeFilters = listOfNotNull(authorId, bbkId, publisherId, query)
+private suspend fun handleCreate(
+    call: ApplicationCall,
+    createBookUseCase: CreateBookUseCase,
+) {
+    val book = call.receive<BookModel>()
+    val createdId = createBookUseCase(book)
+    call.respond(HttpStatusCode.Created, createdId)
+}
 
-                if (activeFilters.isEmpty()) {
-                    call.respond(HttpStatusCode.BadRequest, "Filter query is required")
+private suspend fun handleUpdate(
+    call: ApplicationCall,
+    updateBookUseCase: UpdateBookUseCase,
+) {
+    val book = call.receive<BookModel>()
+    updateBookUseCase(book)
+    call.respond(HttpStatusCode.NoContent)
+}
+
+private suspend fun handleGetAll(
+    call: ApplicationCall,
+    readAllBooksUseCase: ReadBooksUseCase,
+) {
+    val page = call.getParam<Int>("page") { it.toInt() } ?: 1
+    val pageSize = call.getParam<Int>("pageSize") { it.toInt() } ?: 10
+    val books = readAllBooksUseCase(page, pageSize)
+    call.respond(HttpStatusCode.OK, books)
+}
+
+private suspend fun handleGetById(
+    call: ApplicationCall,
+    readBookByIdUseCase: ReadBookByIdUseCase,
+) {
+    val bookId = call.getParam<UUID>("id", true) { UUID.fromString(it) }!!
+    val book = readBookByIdUseCase(bookId)
+    if (book == null) {
+        call.respond(HttpStatusCode.NotFound, "Book not found")
+    } else {
+        call.respond(book)
+    }
+}
+
+private suspend fun handleDeleteById(
+    call: ApplicationCall,
+    deleteBookUseCase: DeleteBookUseCase,
+) {
+    val bookId = call.getParam<UUID>("id", true) { UUID.fromString(it) }!!
+    deleteBookUseCase(bookId)
+    call.respond(HttpStatusCode.NoContent)
+}
+
+private suspend fun handleSearch(
+    call: ApplicationCall,
+    readBookByAuthorUseCase: ReadBookByAuthorUseCase,
+    readBookByBbkUseCase: ReadBookByBbkUseCase,
+    readBookByPublisherUseCase: ReadBookByPublisherUseCase,
+    readBookBySentenceUseCase: ReadBookBySentenceUseCase,
+) {
+    val authorId = call.getParam<UUID>("authorId") { UUID.fromString(it) }
+    val bbkId = call.getParam<UUID>("bbkId") { UUID.fromString(it) }
+    val publisherId = call.getParam<UUID>("publisherId") { UUID.fromString(it) }
+    val query = call.request.queryParameters["q"]
+
+    val activeFilters = listOfNotNull(authorId, bbkId, publisherId, query)
+
+    when {
+        activeFilters.isEmpty() -> call.respond(HttpStatusCode.BadRequest, "Filter query is required")
+        activeFilters.size > 1 -> call.respond(HttpStatusCode.BadRequest, "Filter query is more than one filter")
+        else -> {
+            val result =
+                when {
+                    authorId != null -> readBookByAuthorUseCase(authorId)
+                    bbkId != null -> readBookByBbkUseCase(bbkId)
+                    publisherId != null -> readBookByPublisherUseCase(publisherId)
+                    query != null -> readBookBySentenceUseCase(query)
+                    else -> emptyFlow<BookModel>()
                 }
-                if (activeFilters.size > 1) {
-                    call.respond(HttpStatusCode.BadRequest, "Filter query is more than one filter")
-                }
-
-                val result =
-                    when {
-                        authorId != null -> readBookByAuthorUseCase(authorId)
-                        bbkId != null -> readBookByBbkUseCase(bbkId)
-                        publisherId != null -> readBookByPublisherUseCase(publisherId)
-                        query != null -> readBookBySentenceUseCase(query)
-                        else -> emptyFlow<BookModel>()
-                    }
-                call.respond(result)            }
+            call.respond(result)
         }
     }
 }

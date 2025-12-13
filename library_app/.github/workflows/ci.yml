@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,10 +36,14 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Static analysis
-        run: ./gradlew detekt ktlintCheck halstead --stacktrace
+      - name: Run Detekt (Cyclomatic complexity)
+        run: ./gradlew detekt --stacktrace
+
+      - name: Run Ktlint (Code style)
+        run: ./gradlew ktlintCheck --stacktrace
+
+      - name: Run Halstead complexity
+        run: ./gradlew halstead --stacktrace
 
       - name: Run tests
         run: ./gradlew test --stacktrace
-
-

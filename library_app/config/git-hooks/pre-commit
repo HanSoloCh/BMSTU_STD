@@ -11,4 +11,3 @@ echo "[hook] Running halstead..."
 ./gradlew halstead
 
 echo "[hook] All checks passed."
-
