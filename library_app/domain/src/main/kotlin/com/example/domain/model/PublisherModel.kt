@@ -23,7 +23,7 @@ data class PublisherModel(
 
             email != null && !isValidEmail(email) -> throw InvalidEmailException(email)
             phoneNumber != null && !isValidPhone(phoneNumber) -> throw InvalidPhoneException(
-                phoneNumber
+                phoneNumber,
             )
         }
     }

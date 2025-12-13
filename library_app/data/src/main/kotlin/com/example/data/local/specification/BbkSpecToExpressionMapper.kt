@@ -13,12 +13,14 @@ import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.lowerCase
 
 object BbkSpecToExpressionMapper {
-    fun map(spec: Specification<BbkModel>): Op<Boolean> = when (spec) {
-        is AndSpecification<BbkModel> -> spec.specifications.map { map(it) }
-            .reduce { a, b -> a and b }
+    fun map(spec: Specification<BbkModel>): Op<Boolean> =
+        when (spec) {
+            is AndSpecification<BbkModel> ->
+                spec.specifications.map { map(it) }
+                    .reduce { a, b -> a and b }
 
-        is BbkCodeSpecification -> BbkEntity.code.lowerCase() like "%${spec.code.lowercase()}%"
-        is BbkIdSpecification -> BbkEntity.id eq spec.id
-        else -> throw IllegalArgumentException("Unknown spec")
-    }
+            is BbkCodeSpecification -> BbkEntity.code.lowerCase() like "%${spec.code.lowercase()}%"
+            is BbkIdSpecification -> BbkEntity.id eq spec.id
+            else -> throw IllegalArgumentException("Unknown spec")
+        }
 }

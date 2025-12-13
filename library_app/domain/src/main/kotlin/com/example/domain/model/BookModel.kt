@@ -30,7 +30,7 @@ data class BookModel(
             title.isBlank() -> throw EmptyStringException("title")
             annotation != null && annotation.isBlank() -> throw EmptyStringException("annotation")
             publicationYear != null && publicationYear !in 0..Year.now().value -> throw InvalidDateException(
-                publicationYear.toString()
+                publicationYear.toString(),
             )
 
             mediaType != null && mediaType.isBlank() -> throw EmptyStringException("mediaType")
@@ -40,7 +40,7 @@ data class BookModel(
             copies < 0 -> throw InvalidValueException("copies", copies.toString())
             availableCopies !in 0..copies -> throw InvalidValueException(
                 "availableCopies",
-                availableCopies.toString()
+                availableCopies.toString(),
             )
         }
     }

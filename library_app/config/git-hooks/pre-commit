@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "[hook] Running detekt, ktlint, halstead..."
+echo "[hook] Auto-formatting code..."
+./gradlew addTrailingNewlines ktlintFormat --quiet
+
+echo "[hook] Running detekt (with auto-correct), ktlint, halstead..."
 ./gradlew detekt ktlintCheck halstead --quiet
 echo "[hook] Static analysis passed."
 

@@ -49,7 +49,9 @@ abstract class HalsteadTask : DefaultTask() {
         val violations = mutableListOf<String>()
 
         val ktFiles = sourceDirs.get()
-            .flatMap { dir -> dir.walkTopDown().filter { it.isFile && it.extension == "kt" && !it.inBuildDir() } }
+            .flatMap { dir ->
+                dir.walkTopDown().filter { it.isFile && it.extension == "kt" && !it.inBuildDir() }
+            }
 
         ktFiles.forEach { file ->
             val metrics = computeMetrics(file)
@@ -57,15 +59,21 @@ abstract class HalsteadTask : DefaultTask() {
             val difficulty = metrics.difficulty()
 
             reportLines += "${file.relativeTo(project.rootDir)}: " +
-                "operators=${metrics.totalOperators}, operands=${metrics.totalOperands}, " +
-                "n1=${metrics.distinctOperators.size}, n2=${metrics.distinctOperands.size}, " +
-                "volume=${"%.2f".format(volume)}, difficulty=${"%.2f".format(difficulty)}"
+                    "operators=${metrics.totalOperators}, operands=${metrics.totalOperands}, " +
+                    "n1=${metrics.distinctOperators.size}, n2=${metrics.distinctOperands.size}, " +
+                    "volume=${"%.2f".format(volume)}, difficulty=${"%.2f".format(difficulty)}"
 
             if (volume > maxVolume) {
-                violations += "${file.relativeTo(project.rootDir)} volume %.2f > %d".format(volume, maxVolume)
+                violations += "${file.relativeTo(project.rootDir)} volume %.2f > %d".format(
+                    volume,
+                    maxVolume
+                )
             }
             if (difficulty > maxDifficulty) {
-                violations += "${file.relativeTo(project.rootDir)} difficulty %.2f > %d".format(difficulty, maxDifficulty)
+                violations += "${file.relativeTo(project.rootDir)} difficulty %.2f > %d".format(
+                    difficulty,
+                    maxDifficulty
+                )
             }
         }
 
@@ -115,7 +123,8 @@ abstract class HalsteadTask : DefaultTask() {
         return matches(Regex("[A-Za-z_][A-Za-z0-9_]*")) || matches(Regex("-?\\d+(\\.\\d+)?"))
     }
 
-    private fun File.inBuildDir(): Boolean = path.contains("${File.separator}build${File.separator}")
+    private fun File.inBuildDir(): Boolean =
+        path.contains("${File.separator}build${File.separator}")
 
     private data class Metrics(
         val distinctOperators: Set<String>,

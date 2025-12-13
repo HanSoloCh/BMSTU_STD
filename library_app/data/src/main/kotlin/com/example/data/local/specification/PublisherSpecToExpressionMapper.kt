@@ -13,12 +13,14 @@ import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.lowerCase
 
 object PublisherSpecToExpressionMapper {
-    fun map(spec: Specification<PublisherModel>): Op<Boolean> = when (spec) {
-        is AndSpecification<PublisherModel> -> spec.specifications.map { map(it) }
-            .reduce { a, b -> a and b }
+    fun map(spec: Specification<PublisherModel>): Op<Boolean> =
+        when (spec) {
+            is AndSpecification<PublisherModel> ->
+                spec.specifications.map { map(it) }
+                    .reduce { a, b -> a and b }
 
-        is PublisherIdSpecification -> PublisherEntity.id eq spec.id
-        is PublisherNameSpecification -> PublisherEntity.name.lowerCase() like "%${spec.name.lowercase()}%"
-        else -> throw IllegalArgumentException("Unknown spec")
-    }
+            is PublisherIdSpecification -> PublisherEntity.id eq spec.id
+            is PublisherNameSpecification -> PublisherEntity.name.lowerCase() like "%${spec.name.lowercase()}%"
+            else -> throw IllegalArgumentException("Unknown spec")
+        }
 }

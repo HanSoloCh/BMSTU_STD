@@ -28,7 +28,6 @@ import org.koin.logger.slf4jLogger
 
 fun main(args: Array<String>) = EngineMain.main(args)
 
-
 fun Application.module() {
     configureLog()
     configureSerialization()

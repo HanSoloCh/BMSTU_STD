@@ -8,18 +8,19 @@ import com.example.domain.repository.UserFavoriteRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.UUID
 
-
 class UserFavoriteRepositoryImpl(
-    private val db: Database
+    private val db: Database,
 ) : UserFavoriteRepository {
-    override suspend fun create(userId: UUID, bookId: UUID) = withContext(Dispatchers.IO) {
+    override suspend fun create(
+        userId: UUID,
+        bookId: UUID,
+    ) = withContext(Dispatchers.IO) {
         transaction(db) {
             UserFavoriteCrossRef.insert {
                 it[UserFavoriteCrossRef.userId] = userId
@@ -29,7 +30,10 @@ class UserFavoriteRepositoryImpl(
         userId to bookId
     }
 
-    override suspend fun delete(userId: UUID, bookId: UUID) = withContext(Dispatchers.IO) {
+    override suspend fun delete(
+        userId: UUID,
+        bookId: UUID,
+    ) = withContext(Dispatchers.IO) {
         transaction(db) {
             UserFavoriteCrossRef
                 .deleteWhere {
@@ -38,7 +42,11 @@ class UserFavoriteRepositoryImpl(
         }
     }
 
-    override suspend fun readByUserId(userId: UUID, page: Int, pageSize: Int): List<BookModel> =
+    override suspend fun readByUserId(
+        userId: UUID,
+        page: Int,
+        pageSize: Int,
+    ): List<BookModel> =
         withContext(Dispatchers.IO) {
             val offset: Long = (page * pageSize).toLong()
             transaction(db) {

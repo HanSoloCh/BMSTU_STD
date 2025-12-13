@@ -15,27 +15,31 @@ class UpdateBookUseCase(
     private val bookRepository: BookRepository,
     private val authorRepository: AuthorRepository,
     private val bbkRepository: BbkRepository,
-    private val publisherRepository: PublisherRepository
-
+    private val publisherRepository: PublisherRepository,
 ) {
     suspend operator fun invoke(bookModel: BookModel) {
-        if (!bookRepository.isContain(BookIdSpecification(bookModel.id)))
+        if (!bookRepository.isContain(BookIdSpecification(bookModel.id))) {
             throw ModelNotFoundException("Book", bookModel.id)
+        }
 
-        if (!bbkRepository.isContain(BbkIdSpecification(bookModel.bbkId)))
+        if (!bbkRepository.isContain(BbkIdSpecification(bookModel.bbkId))) {
             throw ModelNotFoundException("Bbk", bookModel.bbkId)
+        }
 
-        if (bookModel.publisherId != null && !publisherRepository.isContain(
+        if (bookModel.publisherId != null &&
+            !publisherRepository.isContain(
                 PublisherIdSpecification(
-                    bookModel.publisherId
-                )
+                    bookModel.publisherId,
+                ),
             )
-        )
+        ) {
             throw ModelNotFoundException("Publisher", bookModel.publisherId)
+        }
 
         for (author in bookModel.authors) {
-            if (!authorRepository.isContain(AuthorIdSpecification(author)))
+            if (!authorRepository.isContain(AuthorIdSpecification(author))) {
                 throw ModelNotFoundException("Author", author)
+            }
         }
         bookRepository.update(bookModel)
     }

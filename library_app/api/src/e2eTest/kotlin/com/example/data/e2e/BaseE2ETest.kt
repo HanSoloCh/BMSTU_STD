@@ -25,7 +25,6 @@ import org.testcontainers.containers.PostgreSQLContainer
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class BaseE2ETest {
-
     protected lateinit var container: PostgreSQLContainer<Nothing>
     protected lateinit var db: Database
     protected lateinit var testConfig: ApplicationConfig
@@ -38,24 +37,26 @@ abstract class BaseE2ETest {
         mode = config.getString("test.database.mode")
 
         if (mode == "container") {
-            container = PostgreSQLContainer<Nothing>("postgres:16").apply {
-                withDatabaseName("testdb")
-                withUsername("testuser")
-                withPassword("testpass")
-                start()
-            }
+            container =
+                PostgreSQLContainer<Nothing>("postgres:16").apply {
+                    withDatabaseName("testdb")
+                    withUsername("testuser")
+                    withPassword("testpass")
+                    start()
+                }
 
-            testConfig = HoconApplicationConfig(
-                ConfigFactory.parseMap(
-                    mapOf(
-                        "ktor.database.driver" to "org.postgresql.Driver",
-                        "ktor.database.url" to container.jdbcUrl,
-                        "ktor.database.user" to container.username,
-                        "ktor.database.password" to container.password,
-                        "ktor.database.maxPoolSize" to 5
-                    )
+            testConfig =
+                HoconApplicationConfig(
+                    ConfigFactory.parseMap(
+                        mapOf(
+                            "ktor.database.driver" to "org.postgresql.Driver",
+                            "ktor.database.url" to container.jdbcUrl,
+                            "ktor.database.user" to container.username,
+                            "ktor.database.password" to container.password,
+                            "ktor.database.maxPoolSize" to 5,
+                        ),
+                    ),
                 )
-            )
         } else if (mode == "external") {
             testConfig = HoconApplicationConfig(config)
         } else {
@@ -63,12 +64,13 @@ abstract class BaseE2ETest {
         }
 
         // Подключаемся к базе
-        db = Database.connect(
-            url = testConfig.property("ktor.database.url").getString(),
-            driver = testConfig.property("ktor.database.driver").getString(),
-            user = testConfig.property("ktor.database.user").getString(),
-            password = testConfig.property("ktor.database.password").getString()
-        )
+        db =
+            Database.connect(
+                url = testConfig.property("ktor.database.url").getString(),
+                driver = testConfig.property("ktor.database.driver").getString(),
+                user = testConfig.property("ktor.database.user").getString(),
+                password = testConfig.property("ktor.database.password").getString(),
+            )
 
         // Создаём таблицы один раз
         transaction(db) {
@@ -82,7 +84,7 @@ abstract class BaseE2ETest {
                 PublisherEntity,
                 ReservationEntity,
                 UserEntity,
-                UserFavoriteCrossRef
+                UserFavoriteCrossRef,
             )
         }
     }

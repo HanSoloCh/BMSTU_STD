@@ -19,46 +19,51 @@ import org.jetbrains.exposed.sql.update
 import java.util.UUID
 
 class UserRepositoryImpl(
-    private val db: Database
+    private val db: Database,
 ) : UserRepository {
-    override suspend fun readById(userId: UUID): UserModel? = withContext(Dispatchers.IO) {
-        transaction(db) {
-            UserEntity.selectAll().where { UserEntity.id eq userId }.firstOrNull()?.let {
-                UserMapper.toDomain(it)
+    override suspend fun readById(userId: UUID): UserModel? =
+        withContext(Dispatchers.IO) {
+            transaction(db) {
+                UserEntity.selectAll().where { UserEntity.id eq userId }.firstOrNull()?.let {
+                    UserMapper.toDomain(it)
+                }
             }
         }
-    }
 
-    override suspend fun create(userModel: UserModel) = withContext(Dispatchers.IO) {
-        transaction(db) {
-            UserEntity.insertAndGetId {
-                UserMapper.toInsertStatement(userModel, it)
-            }.value
-        }
-    }
-
-    override suspend fun update(userModel: UserModel) = withContext(Dispatchers.IO) {
-        transaction(db) {
-            UserEntity.update({ UserEntity.id eq userModel.id }) {
-                UserMapper.toUpdateStatement(userModel, it)
+    override suspend fun create(userModel: UserModel) =
+        withContext(Dispatchers.IO) {
+            transaction(db) {
+                UserEntity.insertAndGetId {
+                    UserMapper.toInsertStatement(userModel, it)
+                }.value
             }
         }
-    }
 
-    override suspend fun deleteById(userId: UUID) = withContext(Dispatchers.IO) {
-        transaction(db) {
-            UserEntity.deleteWhere { id eq userId }
+    override suspend fun update(userModel: UserModel) =
+        withContext(Dispatchers.IO) {
+            transaction(db) {
+                UserEntity.update({ UserEntity.id eq userModel.id }) {
+                    UserMapper.toUpdateStatement(userModel, it)
+                }
+            }
         }
-    }
 
-    override suspend fun isContain(spec: Specification<UserModel>) = withContext(Dispatchers.IO) {
-        query(spec).isNotEmpty()
-    }
+    override suspend fun deleteById(userId: UUID) =
+        withContext(Dispatchers.IO) {
+            transaction(db) {
+                UserEntity.deleteWhere { id eq userId }
+            }
+        }
+
+    override suspend fun isContain(spec: Specification<UserModel>) =
+        withContext(Dispatchers.IO) {
+            query(spec).isNotEmpty()
+        }
 
     override suspend fun query(
         spec: Specification<UserModel>,
         page: Int,
-        pageSize: Int
+        pageSize: Int,
     ): List<UserModel> =
         withContext(Dispatchers.IO) {
             val expression = UserSpecToExpressionMapper.map(spec)
@@ -68,10 +73,12 @@ class UserRepositoryImpl(
                 UserEntity.selectAll().where { expression }.limit(pageSize, offset)
                     .map { UserMapper.toDomain(it) }
             }
-
         }
 
-    override suspend fun login(phone: String, password: String) = withContext(Dispatchers.IO) {
+    override suspend fun login(
+        phone: String,
+        password: String,
+    ) = withContext(Dispatchers.IO) {
         transaction(db) {
             UserEntity
                 .selectAll()

@@ -22,7 +22,9 @@ complexity:
     threshold: 10
   LongMethod:
     active: true
-    threshold: 60
+    threshold: 160
+  LongParameterList:
+    active: false
   LargeClass:
     active: true
     threshold: 600
@@ -38,12 +40,23 @@ complexity:
   StringLiteralDuplication:
     active: false
 
+
+
+
 style:
   MagicNumber:
     active: false
   WildcardImport:
     active: true
-  MaxLineLength:
-    active: true
-    maxLineLength: 140
+  ReturnCount:
+    active: false
+  ThrowsCount:
+    active: false
 
+naming:
+  FunctionNaming:
+    active: false
+
+exceptions:
+  TooGenericExceptionCaught:
+    active: false

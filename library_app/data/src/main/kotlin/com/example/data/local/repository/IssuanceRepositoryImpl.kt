@@ -18,29 +18,32 @@ import org.jetbrains.exposed.sql.update
 import java.util.UUID
 
 class IssuanceRepositoryImpl(
-    private val db: Database
+    private val db: Database,
 ) : IssuanceRepository {
-    override suspend fun create(issuanceModel: IssuanceModel) = withContext(Dispatchers.IO) {
-        transaction(db) {
-            IssuanceEntity.insertAndGetId {
-                IssuanceMapper.toInsertStatement(issuanceModel, it)
-            }.value
-        }
-    }
-
-    override suspend fun update(issuanceModel: IssuanceModel) = withContext(Dispatchers.IO) {
-        transaction(db) {
-            IssuanceEntity.update({ IssuanceEntity.id eq issuanceModel.id }) {
-                IssuanceMapper.toUpdateStatement(issuanceModel, it)
+    override suspend fun create(issuanceModel: IssuanceModel) =
+        withContext(Dispatchers.IO) {
+            transaction(db) {
+                IssuanceEntity.insertAndGetId {
+                    IssuanceMapper.toInsertStatement(issuanceModel, it)
+                }.value
             }
         }
-    }
 
-    override suspend fun deleteById(issuanceId: UUID) = withContext(Dispatchers.IO) {
-        transaction(db) {
-            IssuanceEntity.deleteWhere { id eq issuanceId }
+    override suspend fun update(issuanceModel: IssuanceModel) =
+        withContext(Dispatchers.IO) {
+            transaction(db) {
+                IssuanceEntity.update({ IssuanceEntity.id eq issuanceModel.id }) {
+                    IssuanceMapper.toUpdateStatement(issuanceModel, it)
+                }
+            }
         }
-    }
+
+    override suspend fun deleteById(issuanceId: UUID) =
+        withContext(Dispatchers.IO) {
+            transaction(db) {
+                IssuanceEntity.deleteWhere { id eq issuanceId }
+            }
+        }
 
     override suspend fun isContain(spec: Specification<IssuanceModel>) =
         withContext(Dispatchers.IO) {
@@ -50,7 +53,7 @@ class IssuanceRepositoryImpl(
     override suspend fun query(
         spec: Specification<IssuanceModel>,
         page: Int,
-        pageSize: Int
+        pageSize: Int,
     ): List<IssuanceModel> =
         withContext(Dispatchers.IO) {
             val expression = IssuanceSpecToExpressionMapper.map(spec)

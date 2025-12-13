@@ -5,6 +5,5 @@ import com.example.domain.specification.Specification
 import java.util.UUID
 
 class QueueIdSpecification(val id: UUID) : Specification<QueueModel> {
-    override fun specified(candidate: QueueModel): Boolean =
-        candidate.id == id
+    override fun specified(candidate: QueueModel): Boolean = candidate.id == id
 }

@@ -18,7 +18,7 @@ import org.jetbrains.exposed.sql.update
 import java.util.UUID
 
 class PublisherRepositoryImpl(
-    private val db: Database
+    private val db: Database,
 ) : PublisherRepository {
     override suspend fun readById(publisherId: UUID): PublisherModel? =
         withContext(Dispatchers.IO) {
@@ -30,27 +30,30 @@ class PublisherRepositoryImpl(
             }
         }
 
-    override suspend fun create(publisherModel: PublisherModel) = withContext(Dispatchers.IO) {
-        transaction(db) {
-            PublisherEntity.insertAndGetId {
-                PublisherMapper.toInsertStatement(publisherModel, it)
-            }.value
-        }
-    }
-
-    override suspend fun update(publisherModel: PublisherModel) = withContext(Dispatchers.IO) {
-        transaction(db) {
-            PublisherEntity.update({ PublisherEntity.id eq publisherModel.id }) {
-                PublisherMapper.toUpdateStatement(publisherModel, it)
+    override suspend fun create(publisherModel: PublisherModel) =
+        withContext(Dispatchers.IO) {
+            transaction(db) {
+                PublisherEntity.insertAndGetId {
+                    PublisherMapper.toInsertStatement(publisherModel, it)
+                }.value
             }
         }
-    }
 
-    override suspend fun deleteById(publisherId: UUID) = withContext(Dispatchers.IO) {
-        transaction(db) {
-            PublisherEntity.deleteWhere { id eq publisherId }
+    override suspend fun update(publisherModel: PublisherModel) =
+        withContext(Dispatchers.IO) {
+            transaction(db) {
+                PublisherEntity.update({ PublisherEntity.id eq publisherModel.id }) {
+                    PublisherMapper.toUpdateStatement(publisherModel, it)
+                }
+            }
         }
-    }
+
+    override suspend fun deleteById(publisherId: UUID) =
+        withContext(Dispatchers.IO) {
+            transaction(db) {
+                PublisherEntity.deleteWhere { id eq publisherId }
+            }
+        }
 
     override suspend fun isContain(spec: Specification<PublisherModel>) =
         withContext(Dispatchers.IO) {
@@ -60,7 +63,7 @@ class PublisherRepositoryImpl(
     override suspend fun query(
         spec: Specification<PublisherModel>,
         page: Int,
-        pageSize: Int
+        pageSize: Int,
     ): List<PublisherModel> =
         withContext(Dispatchers.IO) {
             val expression = PublisherSpecToExpressionMapper.map(spec)

@@ -18,36 +18,42 @@ import org.jetbrains.exposed.sql.update
 import java.util.UUID
 
 class QueueRepositoryImpl(
-    private val db: Database
+    private val db: Database,
 ) : QueueRepository {
-    override suspend fun create(queueModel: QueueModel) = withContext(Dispatchers.IO) {
-        transaction(db) {
-            QueueEntity.insertAndGetId {
-                QueueMapper.toInsertStatement(queueModel, it)
-            }.value
-        }
-    }
-
-    override suspend fun update(queueModel: QueueModel) = withContext(Dispatchers.IO) {
-        transaction(db) {
-            QueueEntity.update({ QueueEntity.id eq queueModel.id }) {
-                QueueMapper.toUpdateStatement(queueModel, it)
+    override suspend fun create(queueModel: QueueModel) =
+        withContext(Dispatchers.IO) {
+            transaction(db) {
+                QueueEntity.insertAndGetId {
+                    QueueMapper.toInsertStatement(queueModel, it)
+                }.value
             }
         }
-    }
 
-    override suspend fun deleteById(queueId: UUID) = withContext(Dispatchers.IO) {
-        transaction(db) {
-            QueueEntity.deleteWhere { id eq queueId }
+    override suspend fun update(queueModel: QueueModel) =
+        withContext(Dispatchers.IO) {
+            transaction(db) {
+                QueueEntity.update({ QueueEntity.id eq queueModel.id }) {
+                    QueueMapper.toUpdateStatement(queueModel, it)
+                }
+            }
         }
-    }
+
+    override suspend fun deleteById(queueId: UUID) =
+        withContext(Dispatchers.IO) {
+            transaction(db) {
+                QueueEntity.deleteWhere { id eq queueId }
+            }
+        }
 
     override suspend fun isContain(spec: Specification<QueueModel>) =
         withContext(Dispatchers.IO) {
             query(spec).isNotEmpty()
         }
 
-    override suspend fun getQueuePosition(bookId: UUID, userId: UUID): Int? {
+    override suspend fun getQueuePosition(
+        bookId: UUID,
+        userId: UUID,
+    ): Int? {
         return withContext(Dispatchers.IO) {
             transaction(db) {
                 exec("SELECT get_queue_number('$bookId', '$userId')") { rs ->
@@ -57,11 +63,10 @@ class QueueRepositoryImpl(
         }
     }
 
-
     override suspend fun query(
         spec: Specification<QueueModel>,
         page: Int,
-        pageSize: Int
+        pageSize: Int,
     ): List<QueueModel> =
         withContext(Dispatchers.IO) {
             val expression = QueueSpecToExpressionMapper.map(spec)

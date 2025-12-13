@@ -17,7 +17,6 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 
 class CreatePublisherUseCaseTest {
-
     // mockk
     private val publisherRepository: PublisherRepository = mockk()
     private val createUseCase = CreatePublisherUseCase(publisherRepository)
@@ -37,37 +36,41 @@ class CreatePublisherUseCaseTest {
 
     // Позитивный тест (mockk)
     @Test
-    fun `create new publisher successfully`() = runTest {
-        coEvery { publisherRepository.isContain(any()) } returns false
-        coEvery { publisherRepository.create(testPublisher) } returns testPublisher.id
+    fun `create new publisher successfully`() =
+        runTest {
+            coEvery { publisherRepository.isContain(any()) } returns false
+            coEvery { publisherRepository.create(testPublisher) } returns testPublisher.id
 
-        val result = createUseCase(testPublisher)
+            val result = createUseCase(testPublisher)
 
-        assertEquals(testPublisher.id, result)
-        coVerify { publisherRepository.create(testPublisher) }
-    }
+            assertEquals(testPublisher.id, result)
+            coVerify { publisherRepository.create(testPublisher) }
+        }
 
     // Негативный тест — дубликат (mockk)
     @Test
-    fun `create duplicate publisher throws exception`() = runTest {
-        coEvery { publisherRepository.isContain(any()) } returns true
+    fun `create duplicate publisher throws exception`() =
+        runTest {
+            coEvery { publisherRepository.isContain(any()) } returns true
 
-        assertFailsWith<ModelDuplicateException> { createUseCase(testPublisher) }
-        coVerify(exactly = 0) { publisherRepository.create(any()) }
-    }
+            assertFailsWith<ModelDuplicateException> { createUseCase(testPublisher) }
+            coVerify(exactly = 0) { publisherRepository.create(any()) }
+        }
 
     // Позитивный тест (классический стиль)
     @Test
-    fun `classic repo - create publisher`() = runTest {
-        val createdId = classicCreateUseCase(testPublisher)
-        assertEquals(testPublisher.id, createdId)
-        assertNotNull(memoryRepository.readById(createdId))
-    }
+    fun `classic repo - create publisher`() =
+        runTest {
+            val createdId = classicCreateUseCase(testPublisher)
+            assertEquals(testPublisher.id, createdId)
+            assertNotNull(memoryRepository.readById(createdId))
+        }
 
     // Негативный тест (классический стиль)
     @Test
-    fun `classic repo - create duplicate throws`() = runTest {
-        memoryRepository.create(testPublisher)
-        assertFailsWith<ModelDuplicateException> { classicCreateUseCase(testPublisher) }
-    }
+    fun `classic repo - create duplicate throws`() =
+        runTest {
+            memoryRepository.create(testPublisher)
+            assertFailsWith<ModelDuplicateException> { classicCreateUseCase(testPublisher) }
+        }
 }

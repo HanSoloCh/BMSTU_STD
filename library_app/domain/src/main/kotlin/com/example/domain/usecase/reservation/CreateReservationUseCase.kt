@@ -18,22 +18,26 @@ import java.util.UUID
 class CreateReservationUseCase(
     private val reservationRepository: ReservationRepository,
     private val userRepository: UserRepository,
-    private val bookRepository: BookRepository
+    private val bookRepository: BookRepository,
 ) {
     suspend operator fun invoke(reservationModel: ReservationModel): UUID {
-        if (reservationRepository.isContain(ReservationIdSpecification(reservationModel.id)))
+        if (reservationRepository.isContain(ReservationIdSpecification(reservationModel.id))) {
             throw ModelDuplicateException("Reservation", reservationModel.id)
+        }
 
-        if (!userRepository.isContain(UserIdSpecification(reservationModel.userId)))
+        if (!userRepository.isContain(UserIdSpecification(reservationModel.userId))) {
             throw ModelNotFoundException("User", reservationModel.userId)
+        }
 
-        if (!bookRepository.isContain(BookIdSpecification(reservationModel.bookId)))
+        if (!bookRepository.isContain(BookIdSpecification(reservationModel.bookId))) {
             throw ModelNotFoundException("Book", reservationModel.bookId)
+        }
 
         if (bookRepository.query(BookIdSpecification(reservationModel.bookId))
                 .first().availableCopies <= 0
-        )
+        ) {
             throw BookNoAvailableCopiesException(reservationModel.bookId)
+        }
 
         return reservationRepository.create(reservationModel)
     }

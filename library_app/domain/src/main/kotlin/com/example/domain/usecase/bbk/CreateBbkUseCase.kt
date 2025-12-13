@@ -7,11 +7,12 @@ import com.example.domain.specification.bbk.BbkIdSpecification
 import java.util.UUID
 
 class CreateBbkUseCase(
-    private val bbkRepository: BbkRepository
+    private val bbkRepository: BbkRepository,
 ) {
     suspend operator fun invoke(bbkModel: BbkModel): UUID {
-        if (bbkRepository.isContain(BbkIdSpecification(bbkModel.id)))
+        if (bbkRepository.isContain(BbkIdSpecification(bbkModel.id))) {
             throw ModelDuplicateException("Bbk", bbkModel.id)
+        }
 
         return bbkRepository.create(bbkModel)
     }

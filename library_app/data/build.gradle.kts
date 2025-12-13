@@ -32,7 +32,6 @@ tasks.register<Test>("integrationTest") {
     useJUnitPlatform()
 }
 
-
 dependencies {
     implementation(project(":domain"))
 
@@ -45,7 +44,6 @@ dependencies {
     // Connection pool
     implementation(libs.hikariCP)
 
-
     // Coroutines
     implementation(libs.kotlinx.coroutines.core)
 
@@ -55,7 +53,6 @@ dependencies {
     testImplementation(libs.h2)
     testImplementation(libs.junit.jupiter.api)
     testRuntimeOnly(libs.junit.jupiter.engine)
-
 
     // Тестовые контейнеры
     "integrationTestImplementation"(libs.postgresql)

@@ -16,6 +16,6 @@ interface IssuanceRepository {
     suspend fun query(
         spec: Specification<IssuanceModel>,
         page: Int = 0,
-        pageSize: Int = 20
+        pageSize: Int = 20,
     ): List<IssuanceModel>
 }

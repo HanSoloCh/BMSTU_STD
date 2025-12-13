@@ -1,7 +1,7 @@
 plugins {
     kotlin("jvm")
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    kotlin("plugin.serialization") version "1.9.0"  // Serialization plugin
+    kotlin("plugin.serialization") version "1.9.0" // Serialization plugin
     application
     idea
 }
@@ -30,7 +30,6 @@ configurations.named("e2eTestImplementation") {
 configurations.named("e2eTestRuntimeOnly") {
     extendsFrom(configurations["testRuntimeOnly"])
 }
-
 
 tasks.register<Test>("e2eTest") {
     description = "Runs E2E tests."

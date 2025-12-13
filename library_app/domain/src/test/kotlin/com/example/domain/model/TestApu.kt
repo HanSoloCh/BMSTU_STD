@@ -6,10 +6,10 @@ internal object TestApu {
     fun create(
         id: UUID = UUID.randomUUID(),
         term: String = "Test term",
-        bbkId: UUID
+        bbkId: UUID,
     ) = ApuModel(
         id = id,
         term = term,
-        bbkId = bbkId
+        bbkId = bbkId,
     )
 }

@@ -7,11 +7,12 @@ import com.example.domain.specification.user.UserIdSpecification
 import java.util.UUID
 
 class CreateUserUseCase(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) {
     suspend operator fun invoke(userModel: UserModel): UUID {
-        if (userRepository.isContain(UserIdSpecification(userModel.id)))
+        if (userRepository.isContain(UserIdSpecification(userModel.id))) {
             throw ModelDuplicateException("User", userModel.id)
+        }
 
         return userRepository.create(userModel)
     }

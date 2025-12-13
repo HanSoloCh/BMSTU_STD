@@ -6,11 +6,12 @@ import com.example.domain.repository.UserRepository
 import com.example.domain.specification.user.UserIdSpecification
 
 class UpdateUserUseCase(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) {
     suspend operator fun invoke(userModel: UserModel) {
-        if (!userRepository.isContain(UserIdSpecification(userModel.id)))
+        if (!userRepository.isContain(UserIdSpecification(userModel.id))) {
             throw ModelNotFoundException("User", userModel.id)
+        }
 
         userRepository.update(userModel)
     }

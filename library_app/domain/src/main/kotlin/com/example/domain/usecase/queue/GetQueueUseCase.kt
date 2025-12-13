@@ -11,14 +11,19 @@ import java.util.UUID
 class GetQueueUseCase(
     private val queueRepository: QueueRepository,
     private val userRepository: UserRepository,
-    private val bookRepository: BookRepository
+    private val bookRepository: BookRepository,
 ) {
-    suspend operator fun invoke(bookId: UUID, userId: UUID): Int? {
-        if (!userRepository.isContain(UserIdSpecification(userId)))
+    suspend operator fun invoke(
+        bookId: UUID,
+        userId: UUID,
+    ): Int? {
+        if (!userRepository.isContain(UserIdSpecification(userId))) {
             throw ModelNotFoundException("User", userId)
+        }
 
-        if (!bookRepository.isContain(BookIdSpecification(bookId)))
+        if (!bookRepository.isContain(BookIdSpecification(bookId))) {
             throw ModelNotFoundException("Book", bookId)
+        }
 
         return queueRepository.getQueuePosition(bookId, userId)
     }

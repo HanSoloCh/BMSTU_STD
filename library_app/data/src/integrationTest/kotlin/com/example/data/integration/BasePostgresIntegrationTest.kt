@@ -23,7 +23,6 @@ import org.testcontainers.containers.PostgreSQLContainer
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class BasePostgresIntegrationTest {
-
     // Контейнер и база будут инициализированы в setupDatabase
     protected lateinit var container: PostgreSQLContainer<Nothing>
     protected lateinit var db: Database
@@ -35,33 +34,35 @@ abstract class BasePostgresIntegrationTest {
         config = ConfigFactory.load("application-test.conf")
         mode = config.getString("test.database.mode")
 
-        db = when (mode) {
-            "container" -> {
-                container = PostgreSQLContainer<Nothing>("postgres:16").apply {
-                    withDatabaseName("testdb")
-                    withUsername("testuser")
-                    withPassword("testpass")
-                    start()
+        db =
+            when (mode) {
+                "container" -> {
+                    container =
+                        PostgreSQLContainer<Nothing>("postgres:16").apply {
+                            withDatabaseName("testdb")
+                            withUsername("testuser")
+                            withPassword("testpass")
+                            start()
+                        }
+                    Database.connect(
+                        url = container.jdbcUrl,
+                        driver = container.driverClassName,
+                        user = container.username,
+                        password = container.password,
+                    )
                 }
-                Database.connect(
-                    url = container.jdbcUrl,
-                    driver = container.driverClassName,
-                    user = container.username,
-                    password = container.password
-                )
-            }
 
-            "external" -> {
-                Database.connect(
-                    url = config.getString("test.database.url"),
-                    driver = config.getString("test.database.driver"),
-                    user = config.getString("test.database.user"),
-                    password = config.getString("test.database.password")
-                )
-            }
+                "external" -> {
+                    Database.connect(
+                        url = config.getString("test.database.url"),
+                        driver = config.getString("test.database.driver"),
+                        user = config.getString("test.database.user"),
+                        password = config.getString("test.database.password"),
+                    )
+                }
 
-            else -> error("Unknown db mode: $mode")
-        }
+                else -> error("Unknown db mode: $mode")
+            }
 
         // Создаём таблицы один раз
         transaction(db) {
@@ -75,7 +76,7 @@ abstract class BasePostgresIntegrationTest {
                 PublisherEntity,
                 ReservationEntity,
                 UserEntity,
-                UserFavoriteCrossRef
+                UserFavoriteCrossRef,
             )
         }
     }

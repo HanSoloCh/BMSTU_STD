@@ -18,8 +18,11 @@ interface UserRepository {
     suspend fun query(
         spec: Specification<UserModel>,
         page: Int = 0,
-        pageSize: Int = 20
+        pageSize: Int = 20,
     ): List<UserModel>
 
-    suspend fun login(phone: String, password: String): UserModel?
+    suspend fun login(
+        phone: String,
+        password: String,
+    ): UserModel?
 }

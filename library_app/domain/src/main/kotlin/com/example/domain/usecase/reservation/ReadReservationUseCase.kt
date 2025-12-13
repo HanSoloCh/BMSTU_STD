@@ -9,38 +9,39 @@ import com.example.domain.specification.reservation.ReservationUserIdSpecificati
 import java.util.UUID
 
 class ReadReservationUseCase(
-    private val reservationRepository: ReservationRepository
+    private val reservationRepository: ReservationRepository,
 ) {
     suspend operator fun invoke(
         bookId: UUID?,
         userId: UUID?,
         page: Int = 0,
-        pageSize: Int = 20
+        pageSize: Int = 20,
     ): List<ReservationModel> {
-        if (bookId != null && userId != null)
+        if (bookId != null && userId != null) {
             return reservationRepository.query(
                 AndSpecification(
                     listOf(
                         ReservationBookIdSpecification(bookId),
-                        ReservationUserIdSpecification(userId)
-                    )
+                        ReservationUserIdSpecification(userId),
+                    ),
                 ),
                 page,
-                pageSize
+                pageSize,
             )
-        else if (bookId != null)
+        } else if (bookId != null) {
             return reservationRepository.query(
                 ReservationBookIdSpecification(bookId),
                 page,
-                pageSize
+                pageSize,
             )
-        else if (userId != null)
+        } else if (userId != null) {
             return reservationRepository.query(
                 ReservationUserIdSpecification(userId),
                 page,
-                pageSize
+                pageSize,
             )
-        else
+        } else {
             throw InvalidValueException("bookId, userId", "null, null")
+        }
     }
 }

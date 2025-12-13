@@ -15,13 +15,13 @@ object PublisherMapper {
             name = row[PublisherEntity.name],
             description = row[PublisherEntity.description],
             email = row[PublisherEntity.email],
-            phoneNumber = row[PublisherEntity.phoneNumber]
+            phoneNumber = row[PublisherEntity.phoneNumber],
         )
     }
 
     fun toInsertStatement(
         publisherModel: PublisherModel,
-        statement: InsertStatement<EntityID<UUID>>
+        statement: InsertStatement<EntityID<UUID>>,
     ): InsertStatement<EntityID<UUID>> {
         return statement.also {
             it[PublisherEntity.id] = publisherModel.id
@@ -34,7 +34,7 @@ object PublisherMapper {
 
     fun toUpdateStatement(
         publisherModel: PublisherModel,
-        statement: UpdateStatement
+        statement: UpdateStatement,
     ): UpdateStatement {
         return statement.also {
             it[PublisherEntity.id] = publisherModel.id

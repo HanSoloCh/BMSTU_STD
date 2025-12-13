@@ -6,7 +6,7 @@ import com.example.domain.specification.book.BookPublisherIdSpecification
 import java.util.UUID
 
 class ReadBookByPublisherUseCase(
-    private val bookRepository: BookRepository
+    private val bookRepository: BookRepository,
 ) {
     suspend operator fun invoke(publisherId: UUID): List<BookModel> {
         return bookRepository.query(BookPublisherIdSpecification(publisherId))

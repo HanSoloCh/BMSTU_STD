@@ -24,7 +24,7 @@ object DatabaseBuilder {
         val driver: String,
         val username: String,
         val password: String,
-        val maximumPoolSize: Int = 10
+        val maximumPoolSize: Int = 10,
     )
 
     fun connect(dataSource: DataSource): Database {
@@ -32,15 +32,16 @@ object DatabaseBuilder {
     }
 
     fun createDataSource(config: DatabaseConfig): HikariDataSource {
-        val hikariConfig = HikariConfig().apply {
-            jdbcUrl = config.url
-            driverClassName = config.driver
-            username = config.username
-            password = config.password
-            maximumPoolSize = config.maximumPoolSize
-            connectionTimeout = 5000
-            validationTimeout = 2500
-        }
+        val hikariConfig =
+            HikariConfig().apply {
+                jdbcUrl = config.url
+                driverClassName = config.driver
+                username = config.username
+                password = config.password
+                maximumPoolSize = config.maximumPoolSize
+                connectionTimeout = 5000
+                validationTimeout = 2500
+            }
         return HikariDataSource(hikariConfig)
     }
 
@@ -57,7 +58,7 @@ object DatabaseBuilder {
                 ReservationEntity,
                 QueueEntity,
                 UserEntity,
-                UserFavoriteCrossRef
+                UserFavoriteCrossRef,
             )
         }
     }

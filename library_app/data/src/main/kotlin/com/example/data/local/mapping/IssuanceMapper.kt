@@ -23,7 +23,7 @@ object IssuanceMapper {
 
     fun toInsertStatement(
         issuanceModel: IssuanceModel,
-        statement: InsertStatement<EntityID<UUID>>
+        statement: InsertStatement<EntityID<UUID>>,
     ): InsertStatement<EntityID<UUID>> {
         return statement.also {
             it[IssuanceEntity.id] = issuanceModel.id
@@ -36,7 +36,7 @@ object IssuanceMapper {
 
     fun toUpdateStatement(
         issuanceModel: IssuanceModel,
-        statement: UpdateStatement
+        statement: UpdateStatement,
     ): UpdateStatement {
         return statement.also {
             it[IssuanceEntity.id] = issuanceModel.id

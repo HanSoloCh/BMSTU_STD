@@ -4,9 +4,12 @@ import com.example.domain.model.UserModel
 import com.example.domain.repository.UserRepository
 
 class LoginUserUseCase(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) {
-    suspend operator fun invoke(phone: String, password: String): UserModel? {
+    suspend operator fun invoke(
+        phone: String,
+        password: String,
+    ): UserModel? {
         if (phone.isBlank() || password.isBlank()) {
             return null
         }

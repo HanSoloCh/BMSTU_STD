@@ -5,9 +5,13 @@ import com.example.domain.repository.UserFavoriteRepository
 import java.util.UUID
 
 class ReadFavoriteByUserIdUseCase(
-    private val userFavoriteRepository: UserFavoriteRepository
+    private val userFavoriteRepository: UserFavoriteRepository,
 ) {
-    suspend operator fun invoke(userId: UUID, page: Int = 0, pageSize: Int = 20): List<BookModel> {
+    suspend operator fun invoke(
+        userId: UUID,
+        page: Int = 0,
+        pageSize: Int = 20,
+    ): List<BookModel> {
         return userFavoriteRepository.readByUserId(userId, page, pageSize)
     }
 }

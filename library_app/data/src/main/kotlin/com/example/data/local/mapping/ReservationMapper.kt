@@ -23,7 +23,7 @@ object ReservationMapper {
 
     fun toInsertStatement(
         reservationModel: ReservationModel,
-        statement: InsertStatement<EntityID<UUID>>
+        statement: InsertStatement<EntityID<UUID>>,
     ): InsertStatement<EntityID<UUID>> {
         return statement.also {
             it[ReservationEntity.id] = reservationModel.id
@@ -37,7 +37,7 @@ object ReservationMapper {
 
     fun toUpdateStatement(
         reservationModel: ReservationModel,
-        statement: UpdateStatement
+        statement: UpdateStatement,
     ): UpdateStatement {
         return statement.also {
             it[ReservationEntity.id] = reservationModel.id
@@ -48,5 +48,4 @@ object ReservationMapper {
             it[ReservationEntity.cancelDate] = reservationModel.cancelDate.toKotlinLocalDate()
         }
     }
-
 }

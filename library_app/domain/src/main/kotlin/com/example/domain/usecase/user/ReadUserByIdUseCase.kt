@@ -5,10 +5,9 @@ import com.example.domain.repository.UserRepository
 import java.util.UUID
 
 class ReadUserByIdUseCase(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) {
     suspend operator fun invoke(userId: UUID): UserModel? {
         return userRepository.readById(userId)
     }
 }
-

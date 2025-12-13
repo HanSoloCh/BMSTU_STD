@@ -18,6 +18,6 @@ interface AuthorRepository {
     suspend fun query(
         spec: Specification<AuthorModel>,
         page: Int = 0,
-        pageSize: Int = 20
+        pageSize: Int = 20,
     ): List<AuthorModel>
 }

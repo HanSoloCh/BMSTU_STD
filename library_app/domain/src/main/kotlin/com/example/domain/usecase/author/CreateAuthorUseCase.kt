@@ -7,11 +7,12 @@ import com.example.domain.specification.author.AuthorIdSpecification
 import java.util.UUID
 
 class CreateAuthorUseCase(
-    private val authorRepository: AuthorRepository
+    private val authorRepository: AuthorRepository,
 ) {
     suspend operator fun invoke(authorModel: AuthorModel): UUID {
-        if (authorRepository.isContain(AuthorIdSpecification(authorModel.id)))
+        if (authorRepository.isContain(AuthorIdSpecification(authorModel.id))) {
             throw ModelDuplicateException("Author", authorModel.id)
+        }
 
         return authorRepository.create(authorModel)
     }

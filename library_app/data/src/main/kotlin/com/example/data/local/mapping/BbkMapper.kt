@@ -19,7 +19,7 @@ object BbkMapper {
 
     fun toInsertStatement(
         bbkModel: BbkModel,
-        statement: InsertStatement<EntityID<UUID>>
+        statement: InsertStatement<EntityID<UUID>>,
     ): InsertStatement<EntityID<UUID>> {
         return statement.also {
             it[BbkEntity.id] = bbkModel.id
@@ -28,7 +28,10 @@ object BbkMapper {
         }
     }
 
-    fun toUpdateStatement(bbkModel: BbkModel, statement: UpdateStatement): UpdateStatement {
+    fun toUpdateStatement(
+        bbkModel: BbkModel,
+        statement: UpdateStatement,
+    ): UpdateStatement {
         return statement.also {
             it[BbkEntity.id] = bbkModel.id
             it[BbkEntity.code] = bbkModel.code

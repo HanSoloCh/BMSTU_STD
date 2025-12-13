@@ -15,25 +15,33 @@ object JwtConfig {
 
     private val algorithm = Algorithm.HMAC256(SECRET)
 
-    fun generateToken(userId: UUID, role: String): String = JWT.create()
-        .withAudience(AUDIENCE)
-        .withIssuer(ISSUER)
-        .withClaim("userId", userId.toString())
-        .withClaim("role", role)
-        .withExpiresAt(Date(System.currentTimeMillis() + VALIDITY))
-        .sign(algorithm)
+    fun generateToken(
+        userId: UUID,
+        role: String,
+    ): String =
+        JWT.create()
+            .withAudience(AUDIENCE)
+            .withIssuer(ISSUER)
+            .withClaim("userId", userId.toString())
+            .withClaim("role", role)
+            .withExpiresAt(Date(System.currentTimeMillis() + VALIDITY))
+            .sign(algorithm)
 
     fun configureKtorFeature(config: JWTAuthenticationProvider.Config) {
         config.verifier(
             JWT.require(algorithm)
                 .withAudience(AUDIENCE)
                 .withIssuer(ISSUER)
-                .build()
+                .build(),
         )
         config.validate { credential ->
             if (credential.payload.getClaim("userId")
                     .asInt() != null
-            ) JWTPrincipal(credential.payload) else null
+            ) {
+                JWTPrincipal(credential.payload)
+            } else {
+                null
+            }
         }
     }
 }

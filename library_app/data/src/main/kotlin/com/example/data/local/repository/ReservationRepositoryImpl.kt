@@ -18,29 +18,32 @@ import org.jetbrains.exposed.sql.update
 import java.util.UUID
 
 class ReservationRepositoryImpl(
-    private val db: Database
+    private val db: Database,
 ) : ReservationRepository {
-    override suspend fun create(reservationModel: ReservationModel) = withContext(Dispatchers.IO) {
-        transaction(db) {
-            ReservationEntity.insertAndGetId {
-                ReservationMapper.toInsertStatement(reservationModel, it)
-            }.value
-        }
-    }
-
-    override suspend fun update(reservationModel: ReservationModel) = withContext(Dispatchers.IO) {
-        transaction(db) {
-            ReservationEntity.update({ ReservationEntity.id eq reservationModel.id }) {
-                ReservationMapper.toUpdateStatement(reservationModel, it)
+    override suspend fun create(reservationModel: ReservationModel) =
+        withContext(Dispatchers.IO) {
+            transaction(db) {
+                ReservationEntity.insertAndGetId {
+                    ReservationMapper.toInsertStatement(reservationModel, it)
+                }.value
             }
         }
-    }
 
-    override suspend fun deleteById(reservationId: UUID) = withContext(Dispatchers.IO) {
-        transaction(db) {
-            ReservationEntity.deleteWhere { id eq reservationId }
+    override suspend fun update(reservationModel: ReservationModel) =
+        withContext(Dispatchers.IO) {
+            transaction(db) {
+                ReservationEntity.update({ ReservationEntity.id eq reservationModel.id }) {
+                    ReservationMapper.toUpdateStatement(reservationModel, it)
+                }
+            }
         }
-    }
+
+    override suspend fun deleteById(reservationId: UUID) =
+        withContext(Dispatchers.IO) {
+            transaction(db) {
+                ReservationEntity.deleteWhere { id eq reservationId }
+            }
+        }
 
     override suspend fun isContain(spec: Specification<ReservationModel>) =
         withContext(Dispatchers.IO) {
@@ -50,7 +53,7 @@ class ReservationRepositoryImpl(
     override suspend fun query(
         spec: Specification<ReservationModel>,
         page: Int,
-        pageSize: Int
+        pageSize: Int,
     ): List<ReservationModel> =
         withContext(Dispatchers.IO) {
             val expression = ReservationSpecToExpressionMapper.map(spec)
