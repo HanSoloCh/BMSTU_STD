@@ -82,18 +82,3 @@ subprojects {
         }
     }
 }
-
-tasks.register("installGitHooks") {
-    group = "verification"
-    description = "Install git hooks that run detekt, ktlint and halstead before commit."
-    doLast {
-        val hooksDir = rootDir.resolve(".git/hooks")
-        hooksDir.mkdirs()
-        rootDir.resolve("config/git-hooks/pre-commit").copyTo(
-            hooksDir.resolve("pre-commit"),
-            overwrite = true
-        )
-        hooksDir.resolve("pre-commit").setExecutable(true)
-        println("Pre-commit hook installed.")
-    }
-}
