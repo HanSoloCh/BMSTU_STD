@@ -9,7 +9,7 @@ import java.util.UUID
 data class ApuModel(
     val id: @Contextual UUID = UUID.randomUUID(),
     val term: String,
-    val bbkId: @Contextual UUID
+    val bbkId: @Contextual UUID,
 ) {
     init {
         when {

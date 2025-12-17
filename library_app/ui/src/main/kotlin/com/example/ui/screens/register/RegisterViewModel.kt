@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ui.mapping.UserMapper
 import com.example.ui.network.UserApi
-import com.example.ui.screens.form_screen.form.UserForm
+import com.example.ui.screens.formScreen.form.UserForm
 import com.example.ui.util.UserStore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,7 +32,7 @@ class RegisterViewModel @Inject constructor(
             _state.value = RegisterState.Loading
             try {
                 val userModel =
-                    com.example.ui.screens.form_screen.mapping.UserMapper.toModel(userForm)
+                    com.example.ui.screens.formScreen.mapping.UserMapper.toModel(userForm)
                 userApi.createUser(mapper.toDto(userModel))
                 _state.value = RegisterState.Success("Регистрация прошла успешно")
                 UserStore.save(userModel)

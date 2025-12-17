@@ -5,7 +5,7 @@ import com.example.domain.repository.ApuRepository
 import java.util.UUID
 
 class ReadApuByIdUseCase(
-    private val apuRepository: ApuRepository
+    private val apuRepository: ApuRepository,
 ) {
     suspend operator fun invoke(apuId: UUID): ApuModel? {
         return apuRepository.readById(apuId)

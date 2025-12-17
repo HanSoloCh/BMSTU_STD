@@ -12,13 +12,15 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and
 
 object IssuanceSpecToExpressionMapper {
-    fun map(spec: Specification<IssuanceModel>): Op<Boolean> = when (spec) {
-        is AndSpecification<IssuanceModel> -> spec.specifications.map { map(it) }
-            .reduce { a, b -> a and b }
+    fun map(spec: Specification<IssuanceModel>): Op<Boolean> =
+        when (spec) {
+            is AndSpecification<IssuanceModel> ->
+                spec.specifications.map { map(it) }
+                    .reduce { a, b -> a and b }
 
-        is IssuanceIdSpecification -> IssuanceEntity.id eq spec.id
-        is IssuanceUserIdSpecification -> IssuanceEntity.userId eq spec.userId
-        is IssuanceBookIdSpecification -> IssuanceEntity.bookId eq spec.bookId
-        else -> throw IllegalArgumentException("Unknown spec")
-    }
+            is IssuanceIdSpecification -> IssuanceEntity.id eq spec.id
+            is IssuanceUserIdSpecification -> IssuanceEntity.userId eq spec.userId
+            is IssuanceBookIdSpecification -> IssuanceEntity.bookId eq spec.bookId
+            else -> throw IllegalArgumentException("Unknown spec")
+        }
 }

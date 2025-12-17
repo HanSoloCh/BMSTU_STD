@@ -4,7 +4,7 @@ import com.example.domain.repository.QueueRepository
 import java.util.UUID
 
 class DeleteQueueUseCase(
-    private val queueRepository: QueueRepository
+    private val queueRepository: QueueRepository,
 ) {
     suspend operator fun invoke(queueId: UUID) {
         queueRepository.deleteById(queueId)

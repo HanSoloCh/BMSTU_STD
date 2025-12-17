@@ -1,6 +1,6 @@
 plugins {
     kotlin("jvm")
-    kotlin("plugin.serialization") version "1.9.0"  // Serialization plugin
+    kotlin("plugin.serialization") version "1.9.0" // Serialization plugin
 }
 
 dependencies {

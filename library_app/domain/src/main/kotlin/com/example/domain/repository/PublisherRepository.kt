@@ -18,6 +18,6 @@ interface PublisherRepository {
     suspend fun query(
         spec: Specification<PublisherModel>,
         page: Int = 0,
-        pageSize: Int = 20
+        pageSize: Int = 20,
     ): List<PublisherModel>
 }

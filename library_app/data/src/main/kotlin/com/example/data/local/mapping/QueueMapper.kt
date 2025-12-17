@@ -22,7 +22,7 @@ object QueueMapper {
 
     fun toInsertStatement(
         queueModel: QueueModel,
-        statement: InsertStatement<EntityID<UUID>>
+        statement: InsertStatement<EntityID<UUID>>,
     ): InsertStatement<EntityID<UUID>> {
         return statement.also {
             it[QueueEntity.id] = queueModel.id
@@ -34,7 +34,7 @@ object QueueMapper {
 
     fun toUpdateStatement(
         queueModel: QueueModel,
-        statement: UpdateStatement
+        statement: UpdateStatement,
     ): UpdateStatement {
         return statement.also {
             it[QueueEntity.id] = queueModel.id
@@ -43,5 +43,4 @@ object QueueMapper {
             it[QueueEntity.createdAt] = queueModel.createdAt.toKotlinInstant()
         }
     }
-
 }

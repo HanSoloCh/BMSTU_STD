@@ -14,7 +14,6 @@ import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-
 class CreateAuthorUseCaseTest {
     private val authorRepository: AuthorRepository = mockk()
     private val createAuthorUseCase = CreateAuthorUseCase(authorRepository)
@@ -27,27 +26,28 @@ class CreateAuthorUseCaseTest {
     }
 
     @Test
-    fun `simple create author test`() = runTest {
-        coEvery { authorRepository.isContain(any()) } returns false
-        coEvery { authorRepository.create(testAuthor) } returns testAuthor.id
+    fun `simple create author test`() =
+        runTest {
+            coEvery { authorRepository.isContain(any()) } returns false
+            coEvery { authorRepository.create(testAuthor) } returns testAuthor.id
 
-        val createdId = createAuthorUseCase(testAuthor)
+            val createdId = createAuthorUseCase(testAuthor)
 
-        assertEquals(testAuthor.id, createdId)
+            assertEquals(testAuthor.id, createdId)
 
-        coVerify { authorRepository.isContain(any()) }
-        coVerify { authorRepository.create(testAuthor) }
-    }
+            coVerify { authorRepository.isContain(any()) }
+            coVerify { authorRepository.create(testAuthor) }
+        }
 
     @Test
-    fun `crate duplicate author test`() = runTest {
-        coEvery { authorRepository.isContain(any()) } returns true
+    fun `crate duplicate author test`() =
+        runTest {
+            coEvery { authorRepository.isContain(any()) } returns true
 
-        assertFailsWith<ModelDuplicateException> {
-            createAuthorUseCase(testAuthor)
+            assertFailsWith<ModelDuplicateException> {
+                createAuthorUseCase(testAuthor)
+            }
+            coVerify { authorRepository.isContain(any()) }
+            coVerify(exactly = 0) { authorRepository.create(any()) }
         }
-        coVerify { authorRepository.isContain(any()) }
-        coVerify(exactly = 0) { authorRepository.create(any()) }
-    }
-
 }

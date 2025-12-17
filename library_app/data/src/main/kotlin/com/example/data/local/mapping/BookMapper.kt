@@ -10,7 +10,10 @@ import org.jetbrains.exposed.sql.statements.UpdateStatement
 import java.util.UUID
 
 object BookMapper {
-    fun toDomain(row: ResultRow, authors: List<AuthorModel> = listOf<AuthorModel>()): BookModel {
+    fun toDomain(
+        row: ResultRow,
+        authors: List<AuthorModel> = listOf<AuthorModel>(),
+    ): BookModel {
         return BookModel(
             id = row[BookEntity.id].value,
             title = row[BookEntity.title],
@@ -25,13 +28,13 @@ object BookMapper {
             language = row[BookEntity.language],
             originalLanguage = row[BookEntity.originalLanguage],
             copies = row[BookEntity.copies],
-            availableCopies = row[BookEntity.availableCopies]
+            availableCopies = row[BookEntity.availableCopies],
         )
     }
 
     fun toInsertStatement(
         bookModel: BookModel,
-        statement: InsertStatement<EntityID<UUID>>
+        statement: InsertStatement<EntityID<UUID>>,
     ): InsertStatement<EntityID<UUID>> {
         return statement.also {
             it[BookEntity.id] = bookModel.id
@@ -50,7 +53,10 @@ object BookMapper {
         }
     }
 
-    fun toUpdateStatement(bookModel: BookModel, statement: UpdateStatement): UpdateStatement {
+    fun toUpdateStatement(
+        bookModel: BookModel,
+        statement: UpdateStatement,
+    ): UpdateStatement {
         return statement.also {
             it[BookEntity.id] = bookModel.id
             it[BookEntity.title] = bookModel.title

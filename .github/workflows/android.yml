@@ -29,12 +29,20 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      - name: Run Detekt (Cyclomatic complexity)
+        run: cd library_app && ./gradlew detekt --stacktrace
+
+      - name: Run Ktlint (Code style)
+        run: cd library_app && ./gradlew ktlintCheck --stacktrace
+
+      - name: Run Halstead complexity
+        run: cd library_app && ./gradlew halstead --stacktrace
+
       - name: Unit Tests
         run: cd library_app && ./gradlew test
 
       - name: Integration Tests
         run: cd library_app && ./gradlew integrationTest
-        
+
       - name: e2e Tests
         run: cd library_app && ./gradlew e2eTest
-

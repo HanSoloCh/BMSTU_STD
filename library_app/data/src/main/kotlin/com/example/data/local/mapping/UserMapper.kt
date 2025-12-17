@@ -19,13 +19,13 @@ object UserMapper {
             password = row[UserEntity.password],
             phoneNumber = row[UserEntity.phoneNumber],
             email = row[UserEntity.email],
-            role = UserRole.valueOf(row[UserEntity.role])
+            role = UserRole.valueOf(row[UserEntity.role]),
         )
     }
 
     fun toInsertStatement(
         userModel: UserModel,
-        statement: InsertStatement<EntityID<UUID>>
+        statement: InsertStatement<EntityID<UUID>>,
     ): InsertStatement<EntityID<UUID>> {
         return statement.also {
             it[UserEntity.id] = userModel.id
@@ -39,7 +39,10 @@ object UserMapper {
         }
     }
 
-    fun toUpdateStatement(userModel: UserModel, statement: UpdateStatement): UpdateStatement {
+    fun toUpdateStatement(
+        userModel: UserModel,
+        statement: UpdateStatement,
+    ): UpdateStatement {
         return statement.also {
             it[UserEntity.id] = userModel.id
             it[UserEntity.name] = userModel.name

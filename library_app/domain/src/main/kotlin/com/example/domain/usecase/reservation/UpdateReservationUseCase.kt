@@ -12,17 +12,20 @@ import com.example.domain.specification.user.UserIdSpecification
 class UpdateReservationUseCase(
     private val reservationRepository: ReservationRepository,
     private val userRepository: UserRepository,
-    private val bookRepository: BookRepository
+    private val bookRepository: BookRepository,
 ) {
     suspend operator fun invoke(reservationModel: ReservationModel) {
-        if (!reservationRepository.isContain(ReservationIdSpecification(reservationModel.id)))
+        if (!reservationRepository.isContain(ReservationIdSpecification(reservationModel.id))) {
             throw ModelNotFoundException("Reservation", reservationModel.id)
+        }
 
-        if (!userRepository.isContain(UserIdSpecification(reservationModel.userId)))
+        if (!userRepository.isContain(UserIdSpecification(reservationModel.userId))) {
             throw ModelNotFoundException("User", reservationModel.userId)
+        }
 
-        if (!bookRepository.isContain(BookIdSpecification(reservationModel.bookId)))
+        if (!bookRepository.isContain(BookIdSpecification(reservationModel.bookId))) {
             throw ModelNotFoundException("Book", reservationModel.bookId)
+        }
 
         reservationRepository.update(reservationModel)
     }

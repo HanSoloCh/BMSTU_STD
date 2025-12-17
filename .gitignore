@@ -208,3 +208,20 @@ fabric.properties
 !/gradle/wrapper/gradle-wrapper.jar
 
 # End of https://www.toptal.com/developers/gitignore/api/android,androidstudio,kotlin,gradle
+
+### Python (generic) ###
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+
+### lab_03 specific ###
+# Gatling / sbt build artifacts and reports
+lab_03/gatling/**/target/
+lab_03/gatling/task-temp-directory/
+lab_03/gatling/test-reports/
+
+# Python cache in scripts
+lab_03/scripts/__pycache__/

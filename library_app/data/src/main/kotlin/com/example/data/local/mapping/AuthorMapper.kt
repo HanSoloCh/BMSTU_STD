@@ -12,13 +12,13 @@ object AuthorMapper {
     fun toDomain(row: ResultRow): AuthorModel {
         return AuthorModel(
             id = row[AuthorEntity.id].value,
-            name = row[AuthorEntity.name]
+            name = row[AuthorEntity.name],
         )
     }
 
     fun toInsertStatement(
         author: AuthorModel,
-        statement: InsertStatement<EntityID<UUID>>
+        statement: InsertStatement<EntityID<UUID>>,
     ): InsertStatement<EntityID<UUID>> {
         return statement.also {
             it[AuthorEntity.id] = author.id
@@ -26,7 +26,10 @@ object AuthorMapper {
         }
     }
 
-    fun toUpdateStatement(author: AuthorModel, statement: UpdateStatement): UpdateStatement {
+    fun toUpdateStatement(
+        author: AuthorModel,
+        statement: UpdateStatement,
+    ): UpdateStatement {
         return statement.also {
             it[AuthorEntity.id] = author.id
             it[AuthorEntity.name] = author.name

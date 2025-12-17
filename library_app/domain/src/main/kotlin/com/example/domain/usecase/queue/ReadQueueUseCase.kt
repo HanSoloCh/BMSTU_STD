@@ -9,34 +9,35 @@ import com.example.domain.specification.queue.QueueUserIdSpecification
 import java.util.UUID
 
 class ReadQueueUseCase(
-    private val queueRepository: QueueRepository
+    private val queueRepository: QueueRepository,
 ) {
     suspend operator fun invoke(
         bookId: UUID?,
         userId: UUID?,
         page: Int = 0,
-        pageSize: Int = 20
+        pageSize: Int = 20,
     ): List<QueueModel> {
-        if (bookId != null && userId != null)
+        if (bookId != null && userId != null) {
             return queueRepository.query(
                 AndSpecification(
                     listOf(
                         QueueBookIdSpecification(bookId),
-                        QueueUserIdSpecification(userId)
-                    )
+                        QueueUserIdSpecification(userId),
+                    ),
                 ),
                 page,
-                pageSize
+                pageSize,
             )
-        else if (bookId != null)
+        } else if (bookId != null) {
             return queueRepository.query(
                 QueueBookIdSpecification(bookId),
                 page,
-                pageSize
+                pageSize,
             )
-        else if (userId != null)
+        } else if (userId != null) {
             return queueRepository.query(QueueUserIdSpecification(userId), page, pageSize)
-        else
+        } else {
             throw InvalidValueException("bookId, userId", "null, null")
+        }
     }
 }

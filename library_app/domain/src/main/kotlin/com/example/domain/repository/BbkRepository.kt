@@ -18,6 +18,6 @@ interface BbkRepository {
     suspend fun query(
         spec: Specification<BbkModel>,
         page: Int = 0,
-        pageSize: Int = 20
+        pageSize: Int = 20,
     ): List<BbkModel>
 }

@@ -4,6 +4,7 @@ import com.example.domain.model.BookModel
 import com.example.domain.specification.Specification
 
 class BookTitleSpecification(val title: String) : Specification<BookModel> {
-    override fun specified(candidate: BookModel): Boolean =
-        candidate.title.equals(title, ignoreCase = true)
+    override fun specified(candidate: BookModel): Boolean {
+        return candidate.title.equals(title, ignoreCase = true)
+    }
 }

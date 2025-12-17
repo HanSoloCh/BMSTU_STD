@@ -7,28 +7,28 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.ui.screens.author_books.AuthorBooksScreen
-import com.example.ui.screens.bbk_books.BbkBooksScreen
-import com.example.ui.screens.book_detail.BookDetailScreen
-import com.example.ui.screens.book_issuance.BookIssuanceScreen
-import com.example.ui.screens.book_list.BookListScreen
-import com.example.ui.screens.book_reservation.BookReservationScreen
-import com.example.ui.screens.form_screen.add_entity.AddEntityScreen
-import com.example.ui.screens.form_screen.edit_entity.EditEntityScreen
+import com.example.ui.screens.authorBooks.AuthorBooksScreen
+import com.example.ui.screens.bbkBooks.BbkBooksScreen
+import com.example.ui.screens.bookDetail.BookDetailScreen
+import com.example.ui.screens.bookIssuance.BookIssuanceScreen
+import com.example.ui.screens.bookList.BookListScreen
+import com.example.ui.screens.bookReservation.BookReservationScreen
+import com.example.ui.screens.formScreen.addEntity.AddEntityScreen
+import com.example.ui.screens.formScreen.editEntity.EditEntityScreen
 import com.example.ui.screens.login.LoginScreen
-import com.example.ui.screens.profile_screen.ProfileScreen
+import com.example.ui.screens.profileScreen.ProfileScreen
 import com.example.ui.screens.register.RegisterScreen
-import com.example.ui.screens.select_screen.apu_select.SelectApuScreen
-import com.example.ui.screens.select_screen.author_select.SelectAuthorScreen
-import com.example.ui.screens.select_screen.bbk_select.SelectBbkScreen
-import com.example.ui.screens.select_screen.book_select.SelectBookScreen
-import com.example.ui.screens.select_screen.publisher_select.SelectPublisherScreen
-import com.example.ui.screens.select_screen.user_select.SelectUserScreen
-import com.example.ui.screens.user_favorite.UserFavoriteScreen
-import com.example.ui.screens.user_issuance.UserIssuanceScreen
-import com.example.ui.screens.user_queue.UserQueueScreen
-import com.example.ui.screens.user_reservation.UserReservationScreen
-import com.example.ui.screens.user_screen.UserScreen
+import com.example.ui.screens.selectScreen.apuSelect.SelectApuScreen
+import com.example.ui.screens.selectScreen.authorSelect.SelectAuthorScreen
+import com.example.ui.screens.selectScreen.bbkSelect.SelectBbkScreen
+import com.example.ui.screens.selectScreen.bookSelect.SelectBookScreen
+import com.example.ui.screens.selectScreen.publisherSelect.SelectPublisherScreen
+import com.example.ui.screens.selectScreen.userSelect.SelectUserScreen
+import com.example.ui.screens.userFavorite.UserFavoriteScreen
+import com.example.ui.screens.userIssuance.UserIssuanceScreen
+import com.example.ui.screens.userQueue.UserQueueScreen
+import com.example.ui.screens.userReservation.UserReservationScreen
+import com.example.ui.screens.userScreen.UserScreen
 
 @Composable
 fun NavGraph(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -97,7 +97,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier = Modifier) {
             route = Screen.UserProfile.route,
             arguments = listOf(navArgument("userId") { type = NavType.StringType })
         ) {
-            ProfileScreen(navController = navController)
+            ProfileScreen()
         }
         composable(
             route = Screen.UserIssuance.route,

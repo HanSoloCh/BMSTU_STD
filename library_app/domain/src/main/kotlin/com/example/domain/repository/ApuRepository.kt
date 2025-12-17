@@ -18,6 +18,6 @@ interface ApuRepository {
     suspend fun query(
         spec: Specification<ApuModel>,
         page: Int = 0,
-        pageSize: Int = 20
+        pageSize: Int = 20,
     ): List<ApuModel>
 }

@@ -5,7 +5,7 @@ import com.example.domain.repository.PublisherRepository
 import java.util.UUID
 
 class ReadPublisherByIdUseCase(
-    private val publisherRepository: PublisherRepository
+    private val publisherRepository: PublisherRepository,
 ) {
     suspend operator fun invoke(publisherId: UUID): PublisherModel? {
         return publisherRepository.readById(publisherId)

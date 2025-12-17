@@ -4,6 +4,7 @@ import com.example.domain.common.Regexes
 import com.example.domain.enums.UserRole
 import com.example.domain.exception.EmptyStringException
 import com.example.domain.exception.InvalidEmailException
+import com.example.domain.exception.InvalidPhoneException
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.util.UUID
@@ -26,6 +27,7 @@ data class UserModel(
             secondName != null && secondName.isBlank() -> throw EmptyStringException("secondName")
             password.isBlank() -> throw EmptyStringException("password")
             email != null && !isValidEmail(email) -> throw InvalidEmailException(email)
+            !isValidPhone(phoneNumber) -> throw InvalidPhoneException(phoneNumber)
         }
     }
 

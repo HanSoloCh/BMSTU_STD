@@ -10,33 +10,34 @@ import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
 class DeletePublisherUseCaseTest {
-
     private val publisherRepository: PublisherRepository = mockk()
     private val deleteUseCase = DeletePublisherUseCase(publisherRepository)
 
     private val testPublisher = PublisherMother.random()
 
     @Test
-    fun `delete existing publisher`() = runTest {
-        // Arrange
-        coEvery { publisherRepository.deleteById(testPublisher.id) } returns 1
+    fun `delete existing publisher`() =
+        runTest {
+            // Arrange
+            coEvery { publisherRepository.deleteById(testPublisher.id) } returns 1
 
-        // Act
-        deleteUseCase(testPublisher.id)
+            // Act
+            deleteUseCase(testPublisher.id)
 
-        // Assert
-        coVerify { publisherRepository.deleteById(testPublisher.id) }
-    }
+            // Assert
+            coVerify { publisherRepository.deleteById(testPublisher.id) }
+        }
 
     @Test
-    fun `delete non-existing publisher does nothing`() = runTest {
-        // Arrange
-        coEvery { publisherRepository.deleteById(testPublisher.id) } returns 0
+    fun `delete non-existing publisher does nothing`() =
+        runTest {
+            // Arrange
+            coEvery { publisherRepository.deleteById(testPublisher.id) } returns 0
 
-        // Act
-        deleteUseCase(testPublisher.id)
+            // Act
+            deleteUseCase(testPublisher.id)
 
-        // Assert
-        coVerify { publisherRepository.deleteById(testPublisher.id) }
-    }
+            // Assert
+            coVerify { publisherRepository.deleteById(testPublisher.id) }
+        }
 }

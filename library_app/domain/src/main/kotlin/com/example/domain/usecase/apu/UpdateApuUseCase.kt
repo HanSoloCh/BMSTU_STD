@@ -9,14 +9,16 @@ import com.example.domain.specification.bbk.BbkIdSpecification
 
 class UpdateApuUseCase(
     private val apuRepository: ApuRepository,
-    private val bbkRepository: BbkRepository
+    private val bbkRepository: BbkRepository,
 ) {
     suspend operator fun invoke(apuModel: ApuModel) {
-        if (!apuRepository.isContain(ApuIdSpecification(apuModel.id)))
+        if (!apuRepository.isContain(ApuIdSpecification(apuModel.id))) {
             throw ModelNotFoundException("Apu", apuModel.id)
+        }
 
-        if (!bbkRepository.isContain(BbkIdSpecification(apuModel.bbkId)))
+        if (!bbkRepository.isContain(BbkIdSpecification(apuModel.bbkId))) {
             throw ModelNotFoundException("Bbk", apuModel.bbkId)
+        }
 
         apuRepository.update(apuModel)
     }

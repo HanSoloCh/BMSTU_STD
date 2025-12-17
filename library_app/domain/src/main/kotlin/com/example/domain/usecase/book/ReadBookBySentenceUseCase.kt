@@ -9,15 +9,16 @@ import com.example.domain.specification.book.BookTitleSpecification
 
 class ReadBookBySentenceUseCase(
     private val apuRepository: ApuRepository,
-    private val bookRepository: BookRepository
+    private val bookRepository: BookRepository,
 ) {
     suspend operator fun invoke(sentence: String): List<BookModel> {
         val apuList = apuRepository.query(ApuTermSpecification(sentence))
-        val spec = if (apuList.isNotEmpty()) {
-            BookBbkIdSpecification(apuList.first().bbkId)
-        } else {
-            BookTitleSpecification(sentence)
-        }
+        val spec =
+            if (apuList.isNotEmpty()) {
+                BookBbkIdSpecification(apuList.first().bbkId)
+            } else {
+                BookTitleSpecification(sentence)
+            }
         return bookRepository.query(spec)
     }
 }

@@ -12,29 +12,30 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class ReadPublisherByNameUseCaseTest {
-
     private val publisherRepository: PublisherRepository = mockk()
     private val readUseCase = ReadPublisherByNameUseCase(publisherRepository)
 
     private val testPublisher = PublisherBuilder().withName("Penguin").build()
 
     @Test
-    fun `read publisher by existing name`() = runTest {
-        coEvery { publisherRepository.query(any()) } returns listOf(testPublisher)
+    fun `read publisher by existing name`() =
+        runTest {
+            coEvery { publisherRepository.query(any()) } returns listOf(testPublisher)
 
-        val result = readUseCase("Penguin")
+            val result = readUseCase("Penguin")
 
-        assertEquals(listOf(testPublisher), result)
-        coVerify { publisherRepository.query(any()) }
-    }
+            assertEquals(listOf(testPublisher), result)
+            coVerify { publisherRepository.query(any()) }
+        }
 
     @Test
-    fun `read publisher by unknown name returns empty list`() = runTest {
-        coEvery { publisherRepository.query(any()) } returns emptyList()
+    fun `read publisher by unknown name returns empty list`() =
+        runTest {
+            coEvery { publisherRepository.query(any()) } returns emptyList()
 
-        val result = readUseCase("Unknown")
+            val result = readUseCase("Unknown")
 
-        assertTrue(result.isEmpty())
-        coVerify { publisherRepository.query(any()) }
-    }
+            assertTrue(result.isEmpty())
+            coVerify { publisherRepository.query(any()) }
+        }
 }

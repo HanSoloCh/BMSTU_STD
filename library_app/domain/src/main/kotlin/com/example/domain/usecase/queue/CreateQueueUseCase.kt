@@ -14,17 +14,20 @@ import java.util.UUID
 class CreateQueueUseCase(
     private val queueRepository: QueueRepository,
     private val userRepository: UserRepository,
-    private val bookRepository: BookRepository
+    private val bookRepository: BookRepository,
 ) {
     suspend operator fun invoke(queueModel: QueueModel): UUID {
-        if (queueRepository.isContain(QueueIdSpecification(queueModel.id)))
+        if (queueRepository.isContain(QueueIdSpecification(queueModel.id))) {
             throw ModelDuplicateException("Queue", queueModel.id)
+        }
 
-        if (!userRepository.isContain(UserIdSpecification(queueModel.userId)))
+        if (!userRepository.isContain(UserIdSpecification(queueModel.userId))) {
             throw ModelNotFoundException("User", queueModel.userId)
+        }
 
-        if (!bookRepository.isContain(BookIdSpecification(queueModel.bookId)))
+        if (!bookRepository.isContain(BookIdSpecification(queueModel.bookId))) {
             throw ModelNotFoundException("Book", queueModel.bookId)
+        }
 
         return queueRepository.create(queueModel)
     }

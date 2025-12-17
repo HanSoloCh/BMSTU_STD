@@ -17,48 +17,52 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import java.util.UUID
 
-
 class AuthorRepositoryImpl(
-    private val db: Database
+    private val db: Database,
 ) : AuthorRepository {
-    override suspend fun readById(authorId: UUID): AuthorModel? = withContext(Dispatchers.IO) {
-        transaction(db) {
-            AuthorEntity.selectAll().where { AuthorEntity.id eq authorId }.firstOrNull()?.let {
-                AuthorMapper.toDomain(it)
+    override suspend fun readById(authorId: UUID): AuthorModel? =
+        withContext(Dispatchers.IO) {
+            transaction(db) {
+                AuthorEntity.selectAll().where { AuthorEntity.id eq authorId }.firstOrNull()?.let {
+                    AuthorMapper.toDomain(it)
+                }
             }
         }
-    }
 
-    override suspend fun create(authorModel: AuthorModel) = withContext(Dispatchers.IO) {
-        transaction(db) {
-            AuthorEntity.insertAndGetId {
-                AuthorMapper.toInsertStatement(authorModel, it)
-            }.value
-        }
-    }
-
-    override suspend fun update(authorModel: AuthorModel) = withContext(Dispatchers.IO) {
-        transaction(db) {
-            AuthorEntity.update({ AuthorEntity.id eq authorModel.id }) {
-                AuthorMapper.toUpdateStatement(authorModel, it)
+    override suspend fun create(authorModel: AuthorModel) =
+        withContext(Dispatchers.IO) {
+            transaction(db) {
+                AuthorEntity.insertAndGetId {
+                    AuthorMapper.toInsertStatement(authorModel, it)
+                }.value
             }
         }
-    }
 
-    override suspend fun deleteById(authorId: UUID) = withContext(Dispatchers.IO) {
-        transaction(db) {
-            AuthorEntity.deleteWhere { id eq authorId }
+    override suspend fun update(authorModel: AuthorModel) =
+        withContext(Dispatchers.IO) {
+            transaction(db) {
+                AuthorEntity.update({ AuthorEntity.id eq authorModel.id }) {
+                    AuthorMapper.toUpdateStatement(authorModel, it)
+                }
+            }
         }
-    }
 
-    override suspend fun isContain(spec: Specification<AuthorModel>) = withContext(Dispatchers.IO) {
-        query(spec).isNotEmpty()
-    }
+    override suspend fun deleteById(authorId: UUID) =
+        withContext(Dispatchers.IO) {
+            transaction(db) {
+                AuthorEntity.deleteWhere { id eq authorId }
+            }
+        }
+
+    override suspend fun isContain(spec: Specification<AuthorModel>) =
+        withContext(Dispatchers.IO) {
+            query(spec).isNotEmpty()
+        }
 
     override suspend fun query(
         spec: Specification<AuthorModel>,
         page: Int,
-        pageSize: Int
+        pageSize: Int,
     ): List<AuthorModel> =
         withContext(Dispatchers.IO) {
             val expression = AuthorSpecToExpressionMapper.map(spec)

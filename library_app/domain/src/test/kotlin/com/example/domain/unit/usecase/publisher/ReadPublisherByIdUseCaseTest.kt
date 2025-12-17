@@ -12,29 +12,30 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 class ReadPublisherByIdUseCaseTest {
-
     private val publisherRepository: PublisherRepository = mockk()
     private val readUseCase = ReadPublisherByIdUseCase(publisherRepository)
 
     private val testPublisher = PublisherMother.random()
 
     @Test
-    fun `read existing publisher by id`() = runTest {
-        coEvery { publisherRepository.readById(testPublisher.id) } returns testPublisher
+    fun `read existing publisher by id`() =
+        runTest {
+            coEvery { publisherRepository.readById(testPublisher.id) } returns testPublisher
 
-        val result = readUseCase(testPublisher.id)
+            val result = readUseCase(testPublisher.id)
 
-        assertEquals(testPublisher, result)
-        coVerify { publisherRepository.readById(testPublisher.id) }
-    }
+            assertEquals(testPublisher, result)
+            coVerify { publisherRepository.readById(testPublisher.id) }
+        }
 
     @Test
-    fun `read non-existing publisher by id`() = runTest {
-        coEvery { publisherRepository.readById(testPublisher.id) } returns null
+    fun `read non-existing publisher by id`() =
+        runTest {
+            coEvery { publisherRepository.readById(testPublisher.id) } returns null
 
-        val result = readUseCase(testPublisher.id)
+            val result = readUseCase(testPublisher.id)
 
-        assertNull(result)
-        coVerify { publisherRepository.readById(testPublisher.id) }
-    }
+            assertNull(result)
+            coVerify { publisherRepository.readById(testPublisher.id) }
+        }
 }

@@ -11,14 +11,19 @@ import java.util.UUID
 class CreateFavoriteUseCase(
     private val userFavoriteRepository: UserFavoriteRepository,
     private val userRepository: UserRepository,
-    private val bookRepository: BookRepository
+    private val bookRepository: BookRepository,
 ) {
-    suspend operator fun invoke(userId: UUID, bookId: UUID): Pair<UUID, UUID> {
-        if (!userRepository.isContain(UserIdSpecification(userId)))
+    suspend operator fun invoke(
+        userId: UUID,
+        bookId: UUID,
+    ): Pair<UUID, UUID> {
+        if (!userRepository.isContain(UserIdSpecification(userId))) {
             throw ModelNotFoundException("User", userId)
+        }
 
-        if (!bookRepository.isContain(BookIdSpecification(bookId)))
+        if (!bookRepository.isContain(BookIdSpecification(bookId))) {
             throw ModelNotFoundException("Book", bookId)
+        }
 
         return userFavoriteRepository.create(userId, bookId)
     }

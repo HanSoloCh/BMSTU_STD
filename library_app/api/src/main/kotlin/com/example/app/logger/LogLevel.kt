@@ -1,5 +1,8 @@
 package com.example.app.logger
 
 enum class LogLevel {
-    INFO, DEBUG, WARNING, ERROR
+    INFO,
+    DEBUG,
+    WARNING,
+    ERROR,
 }

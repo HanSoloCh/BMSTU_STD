@@ -16,6 +16,6 @@ interface ReservationRepository {
     suspend fun query(
         spec: Specification<ReservationModel>,
         page: Int = 0,
-        pageSize: Int = 20
+        pageSize: Int = 20,
     ): List<ReservationModel>
 }

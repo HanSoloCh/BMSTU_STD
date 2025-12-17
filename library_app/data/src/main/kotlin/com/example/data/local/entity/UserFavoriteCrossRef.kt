@@ -9,5 +9,3 @@ object UserFavoriteCrossRef : Table("user_book") {
 
     override val primaryKey = PrimaryKey(userId, bookId)
 }
-
-

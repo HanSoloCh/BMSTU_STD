@@ -44,7 +44,7 @@ class BookMapper @Inject constructor(
         id = book.id,
         title = book.title,
         annotation = book.annotation,
-        authors = book.authors.map { it -> it.id },
+        authors = book.authors.map { it.id },
         publisherId = book.publisherModel?.id,
         publicationYear = book.publicationYear,
         codeISBN = book.codeISBN,

@@ -5,12 +5,12 @@ import com.example.domain.repository.PublisherRepository
 import com.example.domain.specification.publisher.PublisherNameSpecification
 
 class ReadPublisherByNameUseCase(
-    private val publisherRepository: PublisherRepository
+    private val publisherRepository: PublisherRepository,
 ) {
     suspend operator fun invoke(
         publisherName: String,
         page: Int = 0,
-        pageSize: Int = 20
+        pageSize: Int = 20,
     ): List<PublisherModel> {
         return publisherRepository.query(PublisherNameSpecification(publisherName), page, pageSize)
     }

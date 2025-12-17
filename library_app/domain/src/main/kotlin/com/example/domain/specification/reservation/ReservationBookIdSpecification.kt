@@ -5,6 +5,5 @@ import com.example.domain.specification.Specification
 import java.util.UUID
 
 class ReservationBookIdSpecification(val bookId: UUID) : Specification<ReservationModel> {
-    override fun specified(candidate: ReservationModel): Boolean =
-        candidate.bookId == bookId
+    override fun specified(candidate: ReservationModel): Boolean = candidate.bookId == bookId
 }

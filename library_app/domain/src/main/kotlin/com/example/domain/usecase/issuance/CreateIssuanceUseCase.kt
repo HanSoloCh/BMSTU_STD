@@ -19,14 +19,16 @@ class CreateIssuanceUseCase(
     private val issuanceRepository: IssuanceRepository,
     private val userRepository: UserRepository,
     private val bookRepository: BookRepository,
-    private val reservationRepository: ReservationRepository
+    private val reservationRepository: ReservationRepository,
 ) {
     suspend operator fun invoke(issuanceModel: IssuanceModel): UUID {
-        if (issuanceRepository.isContain(IssuanceIdSpecification(issuanceModel.id)))
+        if (issuanceRepository.isContain(IssuanceIdSpecification(issuanceModel.id))) {
             throw ModelDuplicateException("Issuance", issuanceModel.id)
+        }
 
-        if (!userRepository.isContain(UserIdSpecification(issuanceModel.userId)))
+        if (!userRepository.isContain(UserIdSpecification(issuanceModel.userId))) {
             throw ModelNotFoundException("User", issuanceModel.userId)
+        }
 
         val bookModel = getBookOrThrow(issuanceModel.bookId)
 
@@ -40,9 +42,13 @@ class CreateIssuanceUseCase(
             ?: throw ModelNotFoundException("Book", bookId)
     }
 
-    private suspend fun createIssuance(issuanceModel: IssuanceModel, book: BookModel): UUID {
-        val reservations = reservationRepository
-            .query(ReservationUserIdSpecification(issuanceModel.userId))
+    private suspend fun createIssuance(
+        issuanceModel: IssuanceModel,
+        book: BookModel,
+    ): UUID {
+        val reservations =
+            reservationRepository
+                .query(ReservationUserIdSpecification(issuanceModel.userId))
 
         // Проверить есть ли у пользователя такая бронь на книгу
         val reservation = reservations.find { it.bookId == issuanceModel.bookId }

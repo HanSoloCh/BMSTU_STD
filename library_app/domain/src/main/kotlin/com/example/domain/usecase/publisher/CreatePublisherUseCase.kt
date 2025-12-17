@@ -7,11 +7,12 @@ import com.example.domain.specification.publisher.PublisherIdSpecification
 import java.util.UUID
 
 class CreatePublisherUseCase(
-    private val publisherRepository: PublisherRepository
+    private val publisherRepository: PublisherRepository,
 ) {
     suspend operator fun invoke(publisherModel: PublisherModel): UUID {
-        if (publisherRepository.isContain(PublisherIdSpecification(publisherModel.id)))
+        if (publisherRepository.isContain(PublisherIdSpecification(publisherModel.id))) {
             throw ModelDuplicateException("Publisher", publisherModel.id)
+        }
 
         return publisherRepository.create(publisherModel)
     }

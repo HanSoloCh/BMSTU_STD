@@ -9,33 +9,35 @@ import com.example.domain.specification.issuance.IssuanceUserIdSpecification
 import java.util.UUID
 
 class ReadIssuanceUseCase(
-    private val issuanceRepository: IssuanceRepository
+    private val issuanceRepository: IssuanceRepository,
 ) {
     suspend operator fun invoke(
         bookId: UUID?,
         userId: UUID?,
         page: Int = 0,
-        pageSize: Int = 20
+        pageSize: Int = 20,
     ): List<IssuanceModel> {
-        if (bookId != null && userId != null)
+        if (bookId != null && userId != null) {
             return issuanceRepository.query(
                 AndSpecification(
                     listOf(
                         IssuanceBookIdSpecification(bookId),
-                        IssuanceUserIdSpecification(userId)
-                    )
+                        IssuanceUserIdSpecification(userId),
+                    ),
                 ),
                 page,
-                pageSize
+                pageSize,
             )
-        else if (bookId != null)
+        } else if (bookId != null) {
             return issuanceRepository.query(
                 IssuanceBookIdSpecification(bookId),
-                page, pageSize
+                page,
+                pageSize,
             )
-        else if (userId != null)
+        } else if (userId != null) {
             return issuanceRepository.query(IssuanceUserIdSpecification(userId), page, pageSize)
-        else
+        } else {
             throw InvalidValueException("bookId, userId", "null, null")
+        }
     }
 }

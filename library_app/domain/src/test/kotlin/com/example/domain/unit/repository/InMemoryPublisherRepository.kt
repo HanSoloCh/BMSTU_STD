@@ -18,8 +18,9 @@ class InMemoryPublisherRepository : PublisherRepository {
     }
 
     override suspend fun deleteById(id: UUID): Int {
-        if (storage.remove(id) == null)
+        if (storage.remove(id) == null) {
             return 0
+        }
         return 1
     }
 
@@ -30,9 +31,10 @@ class InMemoryPublisherRepository : PublisherRepository {
     override suspend fun query(
         spec: Specification<PublisherModel>,
         page: Int,
-        pageSize: Int
+        pageSize: Int,
     ): List<PublisherModel> {
-        return storage.values.filter { spec.specified(it) }.subList(page * pageSize, (page + 1) * pageSize)
+        return storage.values.filter { spec.specified(it) }
+            .subList(page * pageSize, (page + 1) * pageSize)
     }
 
     override suspend fun update(model: PublisherModel): Int {

@@ -8,6 +8,6 @@ internal object TestAuthor {
         name: String = "Test Author",
     ) = AuthorModel(
         id = id,
-        name = name
+        name = name,
     )
 }

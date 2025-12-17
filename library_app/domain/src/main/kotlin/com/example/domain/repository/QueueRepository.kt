@@ -13,11 +13,14 @@ interface QueueRepository {
 
     suspend fun isContain(spec: Specification<QueueModel>): Boolean
 
-    suspend fun getQueuePosition(bookId: UUID, userId: UUID): Int?
+    suspend fun getQueuePosition(
+        bookId: UUID,
+        userId: UUID,
+    ): Int?
 
     suspend fun query(
         spec: Specification<QueueModel>,
         page: Int = 0,
-        pageSize: Int = 20
+        pageSize: Int = 20,
     ): List<QueueModel>
 }

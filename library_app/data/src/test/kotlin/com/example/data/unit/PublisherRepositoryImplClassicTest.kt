@@ -21,17 +21,17 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class PublisherRepositoryImplClassicTest {
-
     private lateinit var db: Database
     private lateinit var repo: PublisherRepositoryImpl
 
     @Before
     fun setup() {
         // In-memory база H2
-        db = Database.Companion.connect(
-            "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;",
-            driver = "org.h2.Driver"
-        )
+        db =
+            Database.Companion.connect(
+                "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;",
+                driver = "org.h2.Driver",
+            )
 
         transaction(db) {
             SchemaUtils.create(PublisherEntity)
@@ -50,112 +50,123 @@ class PublisherRepositoryImplClassicTest {
 
     // --- create ---
     @Test
-    fun `create should insert publisher`() = runBlocking {
-        val publisher = PublisherMother.random()
+    fun `create should insert publisher`() =
+        runBlocking {
+            val publisher = PublisherMother.random()
 
-        repo.create(publisher)
+            repo.create(publisher)
 
-        val fromDb = repo.readById(publisher.id)
-        assertNotNull(fromDb)
-        assertEquals(publisher.name, fromDb.name)
-    }
+            val fromDb = repo.readById(publisher.id)
+            assertNotNull(fromDb)
+            assertEquals(publisher.name, fromDb.name)
+        }
 
     // --- readById ---
     @Test
-    fun `readById should return publisher when exists`() = runBlocking {
-        val publisher = PublisherMother.random()
-        repo.create(publisher)
+    fun `readById should return publisher when exists`() =
+        runBlocking {
+            val publisher = PublisherMother.random()
+            repo.create(publisher)
 
-        val result = repo.readById(publisher.id)
+            val result = repo.readById(publisher.id)
 
-        assertNotNull(result)
-        assertEquals(publisher.id, result.id)
-    }
+            assertNotNull(result)
+            assertEquals(publisher.id, result.id)
+        }
 
     @Test
-    fun `readById should return null when not exists`() = runBlocking {
-        val result = repo.readById(UUID.randomUUID())
-        assertNull(result)
-    }
+    fun `readById should return null when not exists`() =
+        runBlocking {
+            val result = repo.readById(UUID.randomUUID())
+            assertNull(result)
+        }
 
     // --- update ---
     @Test
-    fun `update should modify existing publisher`() = runBlocking {
-        val publisher = PublisherMother.random()
-        repo.create(publisher)
+    fun `update should modify existing publisher`() =
+        runBlocking {
+            val publisher = PublisherMother.random()
+            repo.create(publisher)
 
-        val updated = PublisherMother.withId(publisher.id).copy(name = "Updated name")
-        repo.update(updated)
+            val updated = PublisherMother.withId(publisher.id).copy(name = "Updated name")
+            repo.update(updated)
 
-        val fromDb = repo.readById(publisher.id)
-        assertEquals("Updated name", fromDb?.name)
-    }
+            val fromDb = repo.readById(publisher.id)
+            assertEquals("Updated name", fromDb?.name)
+        }
 
     @Test
-    fun `update should not throw if publisher does not exist`() = runBlocking {
-        val nonExistent = PublisherMother.random()
+    fun `update should not throw if publisher does not exist`() =
+        runBlocking {
+            val nonExistent = PublisherMother.random()
 
-        repo.update(nonExistent)
-        val fromDb = repo.readById(nonExistent.id)
+            repo.update(nonExistent)
+            val fromDb = repo.readById(nonExistent.id)
 
-        assertNull(fromDb)
-    }
+            assertNull(fromDb)
+        }
 
     // --- deleteById ---
     @Test
-    fun `deleteById should remove publisher`() = runBlocking {
-        val publisher = PublisherMother.random()
-        repo.create(publisher)
+    fun `deleteById should remove publisher`() =
+        runBlocking {
+            val publisher = PublisherMother.random()
+            repo.create(publisher)
 
-        repo.deleteById(publisher.id)
+            repo.deleteById(publisher.id)
 
-        val result = repo.readById(publisher.id)
-        assertNull(result)
-    }
+            val result = repo.readById(publisher.id)
+            assertNull(result)
+        }
 
     @Test
-    fun `deleteById should do nothing if publisher not exists`() = runBlocking {
-        val rc = repo.deleteById(UUID.randomUUID())
-        assertEquals(rc, 0)
-    }
+    fun `deleteById should do nothing if publisher not exists`() =
+        runBlocking {
+            val rc = repo.deleteById(UUID.randomUUID())
+            assertEquals(rc, 0)
+        }
 
     // --- isContain ---
     @Test
-    fun `isContain should return true if publisher exists`() = runBlocking {
-        val publisher = PublisherMother.random()
-        repo.create(publisher)
+    fun `isContain should return true if publisher exists`() =
+        runBlocking {
+            val publisher = PublisherMother.random()
+            repo.create(publisher)
 
-        val spec = PublisherIdSpecification(publisher.id)
-        val result = repo.isContain(spec)
+            val spec = PublisherIdSpecification(publisher.id)
+            val result = repo.isContain(spec)
 
-        assertTrue(result)
-    }
+            assertTrue(result)
+        }
 
     @Test
-    fun `isContain should return false if publisher not exists`() = runBlocking {
-        val spec = PublisherIdSpecification(UUID.randomUUID())
-        val result = repo.isContain(spec)
+    fun `isContain should return false if publisher not exists`() =
+        runBlocking {
+            val spec = PublisherIdSpecification(UUID.randomUUID())
+            val result = repo.isContain(spec)
 
-        TestCase.assertFalse(result)
-    }
+            TestCase.assertFalse(result)
+        }
 
     // --- query ---
     @Test
-    fun `query should return publishers matching spec`() = runBlocking {
-        val p1 = PublisherMother.random().copy(name = "Alpha")
-        val p2 = PublisherMother.random().copy(name = "Beta")
-        repo.create(p1)
-        repo.create(p2)
+    fun `query should return publishers matching spec`() =
+        runBlocking {
+            val p1 = PublisherMother.random().copy(name = "Alpha")
+            val p2 = PublisherMother.random().copy(name = "Beta")
+            repo.create(p1)
+            repo.create(p2)
 
-        val result = repo.query(PublisherNameSpecification("Alpha"))
+            val result = repo.query(PublisherNameSpecification("Alpha"))
 
-        assertEquals(1, result.size)
-        assertEquals("Alpha", result.first().name)
-    }
+            assertEquals(1, result.size)
+            assertEquals("Alpha", result.first().name)
+        }
 
     @Test
-    fun `query should return empty list when no match`() = runBlocking {
-        val result = repo.query(PublisherNameSpecification("NonExistent"))
-        assertTrue(result.isEmpty())
-    }
+    fun `query should return empty list when no match`() =
+        runBlocking {
+            val result = repo.query(PublisherNameSpecification("NonExistent"))
+            assertTrue(result.isEmpty())
+        }
 }

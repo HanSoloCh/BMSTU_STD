@@ -8,7 +8,6 @@ import org.jetbrains.exposed.sql.statements.InsertStatement
 import org.jetbrains.exposed.sql.statements.UpdateStatement
 import java.util.UUID
 
-
 object ApuMapper {
     fun toDomain(row: ResultRow): ApuModel {
         return ApuModel(
@@ -20,7 +19,7 @@ object ApuMapper {
 
     fun toInsertStatement(
         apuModel: ApuModel,
-        statement: InsertStatement<EntityID<UUID>>
+        statement: InsertStatement<EntityID<UUID>>,
     ): InsertStatement<EntityID<UUID>> {
         return statement.also {
             it[ApuEntity.id] = apuModel.id
@@ -29,7 +28,10 @@ object ApuMapper {
         }
     }
 
-    fun toUpdateStatement(apuModel: ApuModel, statement: UpdateStatement): UpdateStatement {
+    fun toUpdateStatement(
+        apuModel: ApuModel,
+        statement: UpdateStatement,
+    ): UpdateStatement {
         return statement.also {
             it[ApuEntity.id] = apuModel.id
             it[ApuEntity.term] = apuModel.term

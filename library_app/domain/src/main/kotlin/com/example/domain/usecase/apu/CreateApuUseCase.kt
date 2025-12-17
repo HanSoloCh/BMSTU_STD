@@ -11,14 +11,16 @@ import java.util.UUID
 
 class CreateApuUseCase(
     private val apuRepository: ApuRepository,
-    private val bbkRepository: BbkRepository
+    private val bbkRepository: BbkRepository,
 ) {
     suspend operator fun invoke(apuModel: ApuModel): UUID {
-        if (apuRepository.isContain(ApuIdSpecification(apuModel.id)))
+        if (apuRepository.isContain(ApuIdSpecification(apuModel.id))) {
             throw ModelDuplicateException("Apu", apuModel.id)
+        }
 
-        if (!bbkRepository.isContain(BbkIdSpecification(apuModel.bbkId)))
+        if (!bbkRepository.isContain(BbkIdSpecification(apuModel.bbkId))) {
             throw ModelNotFoundException("Bbk", apuModel.bbkId)
+        }
 
         return apuRepository.create(apuModel)
     }
