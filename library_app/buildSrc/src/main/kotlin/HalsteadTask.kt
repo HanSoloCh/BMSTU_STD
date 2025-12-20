@@ -10,11 +10,6 @@ import org.gradle.api.tasks.TaskAction
 import java.io.File
 import kotlin.math.ln
 
-/**
- * Simple Halstead metrics calculator for Kotlin sources.
- * Counts operators/operands with a lightweight tokenizer and fails the build if
- * thresholds are exceeded.
- */
 abstract class HalsteadTask : DefaultTask() {
 
     @get:InputFiles
@@ -23,11 +18,9 @@ abstract class HalsteadTask : DefaultTask() {
     @get:OutputFile
     abstract val outputFile: RegularFileProperty
 
-    /** Max allowed Halstead Volume per file before the task fails. */
     @get:Input
     var maxVolume: Int = 1200
 
-    /** Max allowed Halstead Difficulty per file before the task fails. */
     @get:Input
     var maxDifficulty: Int = 50
 
