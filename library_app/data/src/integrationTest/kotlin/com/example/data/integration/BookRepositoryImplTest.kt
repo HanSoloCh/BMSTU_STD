@@ -1,9 +1,9 @@
 package com.example.data.integration
 
-import com.example.data.local.entity.AuthorEntity
-import com.example.data.local.entity.BbkEntity
-import com.example.data.local.entity.PublisherEntity
-import com.example.data.local.repository.BookRepositoryImpl
+import com.example.data.entity.AuthorEntity
+import com.example.data.entity.BbkEntity
+import com.example.data.entity.PublisherEntity
+import com.example.data.repository.BookRepositoryImpl
 import com.example.domain.model.BookModel
 import kotlinx.coroutines.test.runTest
 import org.jetbrains.exposed.sql.insertAndGetId

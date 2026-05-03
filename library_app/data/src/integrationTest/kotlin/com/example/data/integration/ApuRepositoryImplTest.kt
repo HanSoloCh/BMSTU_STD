@@ -1,8 +1,8 @@
 package com.example.data.integration
 
-import com.example.data.local.entity.BbkEntity
-import com.example.data.local.repository.ApuRepositoryImpl
-import com.example.data.local.repository.BbkRepositoryImpl
+import com.example.data.entity.BbkEntity
+import com.example.data.repository.ApuRepositoryImpl
+import com.example.data.repository.BbkRepositoryImpl
 import com.example.domain.model.ApuModel
 import com.example.domain.specification.apu.ApuTermSpecification
 import kotlinx.coroutines.test.runTest

@@ -1,9 +1,9 @@
 package com.example.data.e2e
 
-import com.example.app.module
-import com.example.app.serializer.InstantSerializer
-import com.example.app.serializer.LocalDateSerializer
-import com.example.app.serializer.UUIDSerializer
+import com.example.api.module
+import com.example.api.serializer.InstantSerializer
+import com.example.api.serializer.LocalDateSerializer
+import com.example.api.serializer.UUIDSerializer
 import com.example.domain.model.PublisherModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation

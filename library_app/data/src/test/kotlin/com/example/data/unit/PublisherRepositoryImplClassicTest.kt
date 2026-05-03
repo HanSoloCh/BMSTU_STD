@@ -1,7 +1,7 @@
 package com.example.data.unit
 
-import com.example.data.local.entity.PublisherEntity
-import com.example.data.local.repository.PublisherRepositoryImpl
+import com.example.data.entity.PublisherEntity
+import com.example.data.repository.PublisherRepositoryImpl
 import com.example.data.model.publisher.PublisherMother
 import com.example.domain.specification.publisher.PublisherIdSpecification
 import com.example.domain.specification.publisher.PublisherNameSpecification
